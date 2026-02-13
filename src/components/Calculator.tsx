@@ -91,7 +91,7 @@ const PlanColumn = ({
 };
 
 export function Calculator() {
-    const { globalSettings, costDrivers, setGlobalSetting, licenses, toggleLicense } = useStore();
+    const { globalSettings, costDrivers, setGlobalSetting, licenses, toggleLicense, projectedFleetSize } = useStore();
 
     const getSymbol = (currency: Currency) => {
         switch (currency) {
@@ -195,12 +195,34 @@ export function Calculator() {
         if (months === 6) riskFactor = 0.02;
         if (months === 12) riskFactor = 0.01;
 
-        const billingCost = costDrivers.dunningCost * riskFactor; // This is a one-time expected cost per term? 
-        // Or monthly? Dunning usually happens on failed renewal.
-        // Monthly: high chance of churn/fail every month. 
-        // Let's assume this cost applies 'per term' renewal attempt.
+        const billingCost = costDrivers.dunningCost * riskFactor;
 
-        const totalCost = infraCost + simCost + txFee + laborCost + billingCost;
+        // 6. License Costs
+        let totalLicenseCost = 0;
+        licenses.filter(l => l.isEnabled).forEach(l => {
+            if (l.type === 'per-user') {
+                // Per User: Cost * Months
+                // If billing is yearly and we are in a monthly view? 
+                // Usually we amortize or show cash flow. Profitability usually uses accrual/amortized.
+                // Simpler: Just (Cost/Mo) * Months. 
+                // Note: The license object has `costPerUnit`. Is it monthly? 
+                // Manager says: "Cost Per Unit ($)" and Preview says "$X / user" (Monthly Cost). 
+                // So we assume costPerUnit is monthly.
+                totalLicenseCost += (l.costPerUnit || 0) * months;
+            } else if (l.type === 'block') {
+                // Block: Efficiency cost per unit * months
+                const blocksNeeded = Math.ceil(projectedFleetSize / (l.unitsPerBlock || 1));
+                const totalBlockCost = blocksNeeded * (l.blockPrice || 0);
+                const costPerUnit = totalBlockCost / projectedFleetSize;
+                totalLicenseCost += costPerUnit * months;
+            } else if (l.type === 'one-time') {
+                // One-Time: Amortized monthly cost * months
+                const amortizedMonthly = (l.oneTimeFee || 0) / (l.amortizationTermMonths || 1);
+                totalLicenseCost += amortizedMonthly * months;
+            }
+        });
+
+        const totalCost = infraCost + simCost + txFee + laborCost + billingCost + totalLicenseCost;
         const margin = totalRevenueForTerm - totalCost;
         const marginPercent = (margin / totalRevenueForTerm) * 100;
 
@@ -214,7 +236,8 @@ export function Calculator() {
                 connectivity: simCost,
                 transaction: txFee,
                 labor: laborCost,
-                billing: billingCost
+                billing: billingCost,
+                licenses: totalLicenseCost
             }
         };
     };
