@@ -8,6 +8,7 @@ import { LicenseManager } from './components/LicenseManager';
 import { ProductManager } from './components/ProductManager';
 import { ProductCOGS } from './components/ProductCOGS';
 import { MarketComparison } from './components/MarketComparison';
+import { PasswordGate } from './components/PasswordGate';
 import { Package, History, Scale } from 'lucide-react';
 
 // Placeholder Dashboard component until fully implemented
@@ -86,12 +87,14 @@ function App() {
     };
 
     return (
-        <div className="min-h-screen bg-slate-50 font-sans">
-            <Sidebar currentView={currentView} setView={setCurrentView} />
-            <MainLayout>
-                {renderContent()}
-            </MainLayout>
-        </div>
+        <PasswordGate>
+            <div className="min-h-screen bg-slate-50 font-sans">
+                <Sidebar currentView={currentView} setView={setCurrentView} />
+                <MainLayout>
+                    {renderContent()}
+                </MainLayout>
+            </div>
+        </PasswordGate>
     );
 }
 
