@@ -31,13 +31,12 @@ export function Sidebar({ currentView, setView }: { currentView: string; setView
     return (
         <aside className="fixed inset-y-0 left-0 z-10 w-64 bg-white border-r border-slate-200">
             <div className="flex flex-col h-full">
-                <div className="flex flex-col h-20 px-6 border-b border-slate-100 justify-center">
-                    <div className="flex items-center space-x-3">
-                        <img src="/Logo.png" alt="SinTeru Logo" className="h-10 w-auto object-contain" />
-                        <div>
-                            <span className="text-lg font-bold text-slate-900 block leading-tight">ProfitLens</span>
-                            <span className="text-[10px] font-medium text-slate-500 uppercase tracking-wider block">Keep dreaming Keep Winning</span>
+                <div className="flex flex-col h-16 px-6 border-b border-slate-100 justify-center">
+                    <div className="flex items-center space-x-2">
+                        <div className="w-8 h-8 bg-indigo-600 rounded-lg flex items-center justify-center">
+                            <span className="text-white font-bold text-lg">P</span>
                         </div>
+                        <span className="text-lg font-bold text-slate-900">ProfitLens</span>
                     </div>
                 </div>
 
