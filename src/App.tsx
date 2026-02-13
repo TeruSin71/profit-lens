@@ -8,7 +8,8 @@ import { LicenseManager } from './components/LicenseManager';
 
 
 import { ProductManager } from './components/ProductManager';
-import { Package } from 'lucide-react';
+import { ProductCOGS } from './components/ProductCOGS';
+import { Package, History } from 'lucide-react';
 
 // Placeholder Dashboard component until fully implemented
 const DashboardPlaceholder = ({ setView }: { setView: (view: string) => void }) => (
@@ -28,6 +29,17 @@ const DashboardPlaceholder = ({ setView }: { setView: (view: string) => void }) 
                 </div>
                 <h3 className="text-lg font-semibold text-slate-900">Product Data</h3>
                 <p className="text-sm text-center text-slate-500 mt-2">Manage material codes and descriptions</p>
+            </div>
+
+            <div
+                onClick={() => setView('product-cogs')}
+                className="group relative flex flex-col items-center justify-center p-8 bg-white rounded-xl border border-slate-200 hover:border-indigo-300 hover:shadow-md transition-all cursor-pointer"
+            >
+                <div className="p-4 bg-purple-50 rounded-full mb-4 group-hover:scale-110 transition-transform">
+                    <History className="w-8 h-8 text-purple-600" />
+                </div>
+                <h3 className="text-lg font-semibold text-slate-900">Product COGS</h3>
+                <p className="text-sm text-center text-slate-500 mt-2">View saved profitability scenarios</p>
             </div>
         </div>
 
@@ -54,6 +66,8 @@ function App() {
                 return <CostDrivers />; // Reusing CostDrivers for simplicity as requested logic is similar or part of it
             case 'products':
                 return <ProductManager />;
+            case 'product-cogs':
+                return <ProductCOGS />;
             default:
                 return <DashboardPlaceholder setView={setCurrentView} />;
         }

@@ -1,11 +1,15 @@
+import { useState } from 'react';
 import { useStore } from '../store/useStore';
-import { Currency, License } from '../types';
+import { Currency, License, SavedScenario } from '../types';
 import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
 import { Input } from './ui/input';
 import { Label } from './ui/label';
 import { Switch } from './ui/switch';
 import { cn } from '../lib/utils';
 import { Visualization } from './Visualization';
+import { v4 as uuidv4 } from 'uuid';
+import { format } from 'date-fns';
+import { Save } from 'lucide-react';
 
 const PlanColumn = ({
     title,
@@ -91,7 +95,21 @@ const PlanColumn = ({
 };
 
 export function Calculator() {
-    const { globalSettings, costDrivers, setGlobalSetting, licenses, toggleLicense, projectedFleetSize, products, activeProductId, setActiveProduct } = useStore();
+    const {
+        globalSettings,
+        costDrivers,
+        setGlobalSetting,
+        licenses,
+        toggleLicense,
+        projectedFleetSize,
+        products,
+        activeProductId,
+        setActiveProduct,
+        saveScenario
+    } = useStore();
+
+    const [isSaveDialogOpen, setIsSaveDialogOpen] = useState(false);
+    const [scenarioName, setScenarioName] = useState('');
 
     const getSymbol = (currency: Currency) => {
         switch (currency) {
@@ -146,7 +164,6 @@ export function Calculator() {
         // Context: comparing terms. Usually 6-month term is paid upfront? Or monthly?
         // "Yearly plans incur this fee only once, creating huge savings" implies Upfront payment for long terms.
         // So 6-month is also upfront (1 tx), Monthly is recurring (months * tx).
-
 
         // Wait, if we compare "Monthly" plan over what duration? 
         // "Create a 3-column view comparing Monthly, 6-Month, and Yearly plans side-by-side."
@@ -246,11 +263,85 @@ export function Calculator() {
     const sixMonthData = calculateVariables(6);
     const yearlyData = calculateVariables(12);
 
+    const handleSave = () => {
+        if (!scenarioName.trim()) return;
+
+        const now = new Date();
+        const scenario: SavedScenario = {
+            id: uuidv4(),
+            name: scenarioName,
+            timestamp: now.toISOString(),
+            formattedDate: format(now, 'dd/MM/yyyy HH:mm'),
+            inputs: {
+                globalSettings,
+                costDrivers,
+                licenses,
+                projectedFleetSize,
+                activeProductId
+            },
+            results: {
+                monthly: monthlyData,
+                sixMonth: sixMonthData,
+                yearly: yearlyData
+            }
+        };
+
+        saveScenario(scenario);
+        setIsSaveDialogOpen(false);
+        setScenarioName('');
+        // Optional: Add toast notification here
+    };
+
     return (
-        <div className="space-y-8 animate-in fade-in duration-500">
+        <div className="space-y-8 animate-in fade-in duration-500 relative">
+            {isSaveDialogOpen && (
+                <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center">
+                    <Card className="w-96">
+                        <CardHeader>
+                            <CardTitle>Save Scenario</CardTitle>
+                        </CardHeader>
+                        <CardContent className="space-y-4">
+                            <div className="space-y-2">
+                                <Label>Scenario Name</Label>
+                                <Input
+                                    value={scenarioName}
+                                    onChange={(e) => setScenarioName(e.target.value)}
+                                    placeholder="e.g. Enterprise Plan Q3"
+                                />
+                            </div>
+                            <div className="flex justify-end space-x-2">
+                                <button
+                                    onClick={() => setIsSaveDialogOpen(false)}
+                                    className="px-4 py-2 text-sm text-slate-600 hover:text-slate-900"
+                                >
+                                    Cancel
+                                </button>
+                                <button
+                                    onClick={handleSave}
+                                    className="px-4 py-2 text-sm bg-indigo-500 text-white rounded-md hover:bg-indigo-600"
+                                >
+                                    Save
+                                </button>
+                            </div>
+                        </CardContent>
+                    </Card>
+                </div>
+            )}
+
             <div className="flex flex-col space-y-2">
-                <h2 className="text-3xl font-bold tracking-tight text-slate-900">Profitability Calculator</h2>
-                <p className="text-slate-500">Compare unit economics across standard contract terms.</p>
+                <div className="flex justify-between items-center">
+                    <div>
+                        <h2 className="text-3xl font-bold tracking-tight text-slate-900">Profitability Calculator</h2>
+                        <p className="text-slate-500">Compare unit economics across standard contract terms.</p>
+                    </div>
+                    <button
+                        onClick={() => setIsSaveDialogOpen(true)}
+                        className="flex items-center gap-2 px-4 py-2 bg-indigo-50 text-indigo-600 rounded-md hover:bg-indigo-100 transition-colors font-medium text-sm"
+                    >
+                        <Save className="h-4 w-4" />
+                        Save Scenario
+                    </button>
+                </div>
             </div>
 
             {/* Inputs Section */}

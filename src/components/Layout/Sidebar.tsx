@@ -1,4 +1,4 @@
-import { LayoutDashboard, Settings, Calculator, Server, FileKey, Package } from 'lucide-react';
+import { LayoutDashboard, Settings, Calculator, Server, FileKey, Package, History } from 'lucide-react';
 import { cn } from '../../lib/utils';
 
 interface NavItemProps {
@@ -77,6 +77,12 @@ export function Sidebar({ currentView, setView }: { currentView: string; setView
                         label="Product Data"
                         isActive={currentView === 'products'}
                         onClick={() => setView('products')}
+                    />
+                    <NavItem
+                        icon={History}
+                        label="Product COGS"
+                        isActive={currentView === 'product-cogs'}
+                        onClick={() => setView('product-cogs')}
                     />
                 </div>
 

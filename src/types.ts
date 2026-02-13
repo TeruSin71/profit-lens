@@ -88,10 +88,49 @@ export interface StoreState {
     updateProduct: (id: string, updates: Partial<Product>) => void;
     deleteProduct: (id: string) => void;
     setActiveProduct: (id: string | null) => void;
+
+    // History / Scenarios
+    savedScenarios: SavedScenario[];
+    saveScenario: (scenario: SavedScenario) => void;
+    deleteScenario: (id: string) => void;
 }
 
 export interface Product {
     id: string;
     materialCode: string;
     description: string;
+}
+
+export interface CalculatorData {
+    revenue: number;
+    totalCost: number;
+    margin: number;
+    marginPercent: number;
+    costs: {
+        infra: number;
+        connectivity: number;
+        transaction: number;
+        labor: number;
+        billing: number;
+        licenses: number;
+    };
+}
+
+export interface SavedScenario {
+    id: string;
+    name: string;
+    timestamp: string; // ISO String
+    formattedDate: string; // dd/mm/yyyy hh:mm
+    inputs: {
+        globalSettings: GlobalSettings;
+        costDrivers: CostDrivers;
+        licenses: License[];
+        projectedFleetSize: number;
+        activeProductId: string | null;
+    };
+    results: {
+        monthly: CalculatorData;
+        sixMonth: CalculatorData;
+        yearly: CalculatorData;
+    };
 }
