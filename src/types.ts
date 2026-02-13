@@ -64,6 +64,15 @@ export interface License {
     amortizationTermMonths?: number;
 }
 
+// Hardware Types
+export interface HardwareItem {
+    id: string;
+    name: string;
+    cost: number;
+    quantity: number;
+    type: 'camera' | 'compute' | 'sensor' | 'installation' | 'other';
+}
+
 export interface StoreState {
     costDrivers: CostDrivers;
     globalSettings: GlobalSettings;
@@ -80,6 +89,12 @@ export interface StoreState {
     setProjectedFleetSize: (size: number) => void;
 
     resetDefaults: () => void;
+
+    // Hardware Actions
+    hardware: HardwareItem[];
+    addHardware: (item: HardwareItem) => void;
+    updateHardware: (id: string, updates: Partial<HardwareItem>) => void;
+    deleteHardware: (id: string) => void;
 
     // Product Data
     products: Product[];

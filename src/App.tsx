@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Sidebar } from './components/Layout/Sidebar';
 import { MainLayout } from './components/Layout/MainLayout';
+import { HardwareIntegration } from './components/HardwareIntegration';
 import { CostDrivers } from './components/CostDrivers';
 import { Calculator } from './components/Calculator';
 import { LicenseManager } from './components/LicenseManager';
@@ -72,7 +73,7 @@ function App() {
             case 'cost-drivers':
                 return <CostDrivers />;
             case 'hardware':
-                return <CostDrivers />;
+                return <HardwareIntegration />;
             case 'products':
                 return <ProductManager />;
             case 'product-cogs':

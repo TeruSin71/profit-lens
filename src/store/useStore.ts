@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
-import { CostDrivers, GlobalSettings, StoreState, License, Product, SavedScenario } from '../types';
+import { CostDrivers, GlobalSettings, StoreState, License, Product, SavedScenario, HardwareItem } from '../types';
 
 const defaultCostDrivers: CostDrivers = {
     dataRatePerGB: 0.05,
@@ -63,6 +63,13 @@ const defaultLicenses: License[] = [
     }
 ];
 
+const defaultHardware: HardwareItem[] = [
+    { id: '1', name: 'High-speed Industrial Camera', cost: 2000, quantity: 1, type: 'camera' },
+    { id: '2', name: 'Edge Server / IPC', cost: 5000, quantity: 1, type: 'compute' },
+    { id: '3', name: 'IoT Sensors & Cabling', cost: 500, quantity: 1, type: 'sensor' },
+    { id: '4', name: 'Professional Installation', cost: 1500, quantity: 1, type: 'installation' },
+];
+
 export const useStore = create<StoreState>()(
     persist(
         (set) => ({
@@ -98,6 +105,21 @@ export const useStore = create<StoreState>()(
 
             setProjectedFleetSize: (size: number) =>
                 set({ projectedFleetSize: size }),
+
+            // Hardware Actions
+            hardware: defaultHardware,
+            addHardware: (item: HardwareItem) =>
+                set((state) => ({
+                    hardware: [...state.hardware, item]
+                })),
+            updateHardware: (id: string, updates: Partial<HardwareItem>) =>
+                set((state) => ({
+                    hardware: state.hardware.map(h => h.id === id ? { ...h, ...updates } : h)
+                })),
+            deleteHardware: (id: string) =>
+                set((state) => ({
+                    hardware: state.hardware.filter(h => h.id !== id)
+                })),
 
             // Product Actions
             products: [],
@@ -140,6 +162,7 @@ export const useStore = create<StoreState>()(
                     globalSettings: defaultGlobalSettings,
                     licenses: defaultLicenses,
                     projectedFleetSize: 100,
+                    hardware: defaultHardware,
                     products: [],
                     activeProductId: null,
                     savedScenarios: []
