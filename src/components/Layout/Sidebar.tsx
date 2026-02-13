@@ -1,4 +1,5 @@
-import { LayoutDashboard, Settings, Calculator, Server, FileKey, Package, History } from 'lucide-react';
+import { LayoutDashboard, Settings, Calculator, Server, FileKey, Package, History, Scale } from 'lucide-react';
+import { UserButton, useUser } from "@clerk/clerk-react";
 import { cn } from '../../lib/utils';
 
 interface NavItemProps {
@@ -25,16 +26,20 @@ const NavItem = ({ icon: Icon, label, isActive, onClick }: NavItemProps) => {
     );
 };
 
+
 export function Sidebar({ currentView, setView }: { currentView: string; setView: (view: string) => void }) {
+    const { user } = useUser();
+
     return (
         <aside className="fixed inset-y-0 left-0 z-10 w-64 bg-white border-r border-slate-200">
             <div className="flex flex-col h-full">
-                <div className="flex items-center h-16 px-6 border-b border-slate-100">
-                    <div className="flex items-center space-x-2">
-                        <div className="w-8 h-8 bg-indigo-600 rounded-lg flex items-center justify-center">
-                            <span className="text-white font-bold text-lg">P</span>
+                <div className="flex flex-col h-20 px-6 border-b border-slate-100 justify-center">
+                    <div className="flex items-center space-x-3">
+                        <img src="/Logo.png" alt="SinTeru Logo" className="h-10 w-auto object-contain" />
+                        <div>
+                            <span className="text-lg font-bold text-slate-900 block leading-tight">ProfitLens</span>
+                            <span className="text-[10px] font-medium text-slate-500 uppercase tracking-wider block">Keep dreaming Keep Winning</span>
                         </div>
-                        <span className="text-lg font-bold text-slate-900">ProfitLens</span>
                     </div>
                 </div>
 
@@ -84,16 +89,24 @@ export function Sidebar({ currentView, setView }: { currentView: string; setView
                         isActive={currentView === 'product-cogs'}
                         onClick={() => setView('product-cogs')}
                     />
+                    <NavItem
+                        icon={Scale}
+                        label="Market Analysis"
+                        isActive={currentView === 'market-comparison'}
+                        onClick={() => setView('market-comparison')}
+                    />
                 </div>
 
                 <div className="p-4 border-t border-slate-100">
                     <div className="flex items-center p-3 bg-slate-50 rounded-lg">
-                        <div className="w-8 h-8 rounded-full bg-indigo-100 flex items-center justify-center text-indigo-600 font-medium text-sm">
-                            TS
-                        </div>
-                        <div className="ml-3">
-                            <p className="text-sm font-medium text-slate-900">Terulin S.</p>
-                            <p className="text-xs text-slate-500">Admin</p>
+                        <UserButton />
+                        <div className="ml-3 overflow-hidden">
+                            <p className="text-sm font-medium text-slate-900 truncate">
+                                {user?.fullName || user?.primaryEmailAddress?.emailAddress}
+                            </p>
+                            <p className="text-xs text-slate-500 truncate">
+                                {user?.primaryEmailAddress?.emailAddress}
+                            </p>
                         </div>
                     </div>
                 </div>
