@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import { CostDrivers, GlobalSettings, StoreState, License } from '../types';
+import { CostDrivers, GlobalSettings, StoreState, License, Product } from '../types';
 
 const defaultCostDrivers: CostDrivers = {
     dataRatePerGB: 0.05,
@@ -96,11 +96,36 @@ export const useStore = create<StoreState>((set) => ({
     setProjectedFleetSize: (size: number) =>
         set({ projectedFleetSize: size }),
 
+    // Product Actions
+    products: [],
+    activeProductId: null,
+
+    addProduct: (product: Product) =>
+        set((state) => ({
+            products: [...state.products, product]
+        })),
+
+    updateProduct: (id: string, updates: Partial<Product>) =>
+        set((state) => ({
+            products: state.products.map(p => p.id === id ? { ...p, ...updates } : p)
+        })),
+
+    deleteProduct: (id: string) =>
+        set((state) => ({
+            products: state.products.filter(p => p.id !== id),
+            activeProductId: state.activeProductId === id ? null : state.activeProductId
+        })),
+
+    setActiveProduct: (id: string | null) =>
+        set({ activeProductId: id }),
+
     resetDefaults: () =>
         set({
             costDrivers: defaultCostDrivers,
             globalSettings: defaultGlobalSettings,
             licenses: defaultLicenses,
             projectedFleetSize: 100,
+            products: [],
+            activeProductId: null
         }),
 }));

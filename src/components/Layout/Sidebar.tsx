@@ -1,4 +1,4 @@
-import { LayoutDashboard, Settings, Calculator, Server, FileKey } from 'lucide-react';
+import { LayoutDashboard, Settings, Calculator, Server, FileKey, Package } from 'lucide-react';
 import { cn } from '../../lib/utils';
 
 interface NavItemProps {
@@ -71,6 +71,12 @@ export function Sidebar({ currentView, setView }: { currentView: string; setView
                         label="Hardware & Integration"
                         isActive={currentView === 'hardware'}
                         onClick={() => setView('hardware')}
+                    />
+                    <NavItem
+                        icon={Package}
+                        label="Product Data"
+                        isActive={currentView === 'products'}
+                        onClick={() => setView('products')}
                     />
                 </div>
 

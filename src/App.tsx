@@ -7,13 +7,30 @@ import { Calculator } from './components/Calculator';
 import { LicenseManager } from './components/LicenseManager';
 
 
+import { ProductManager } from './components/ProductManager';
+import { Package } from 'lucide-react';
+
 // Placeholder Dashboard component until fully implemented
-const DashboardPlaceholder = () => (
+const DashboardPlaceholder = ({ setView }: { setView: (view: string) => void }) => (
     <div className="space-y-6">
         <div className="flex items-center justify-between">
             <h1 className="text-3xl font-bold tracking-tight text-slate-900">Dashboard</h1>
             <span className="text-sm text-slate-500">Overview of profitability</span>
         </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div
+                onClick={() => setView('products')}
+                className="group relative flex flex-col items-center justify-center p-8 bg-white rounded-xl border border-slate-200 hover:border-indigo-300 hover:shadow-md transition-all cursor-pointer"
+            >
+                <div className="p-4 bg-indigo-50 rounded-full mb-4 group-hover:scale-110 transition-transform">
+                    <Package className="w-8 h-8 text-indigo-600" />
+                </div>
+                <h3 className="text-lg font-semibold text-slate-900">Product Data</h3>
+                <p className="text-sm text-center text-slate-500 mt-2">Manage material codes and descriptions</p>
+            </div>
+        </div>
+
         <div className="p-4 bg-white rounded-lg border border-slate-200">
             <p className="text-slate-500">Welcome to ProfitLens. Use the sidebar to navigate to the Calculator.</p>
         </div>
@@ -26,7 +43,7 @@ function App() {
     const renderContent = () => {
         switch (currentView) {
             case 'dashboard':
-                return <DashboardPlaceholder />;
+                return <DashboardPlaceholder setView={setCurrentView} />;
             case 'calculator':
                 return <Calculator />;
             case 'licenses':
@@ -35,8 +52,10 @@ function App() {
                 return <CostDrivers />;
             case 'hardware':
                 return <CostDrivers />; // Reusing CostDrivers for simplicity as requested logic is similar or part of it
+            case 'products':
+                return <ProductManager />;
             default:
-                return <DashboardPlaceholder />;
+                return <DashboardPlaceholder setView={setCurrentView} />;
         }
     };
 

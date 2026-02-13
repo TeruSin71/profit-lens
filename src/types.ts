@@ -80,4 +80,18 @@ export interface StoreState {
     setProjectedFleetSize: (size: number) => void;
 
     resetDefaults: () => void;
+
+    // Product Data
+    products: Product[];
+    activeProductId: string | null;
+    addProduct: (product: Product) => void;
+    updateProduct: (id: string, updates: Partial<Product>) => void;
+    deleteProduct: (id: string) => void;
+    setActiveProduct: (id: string | null) => void;
+}
+
+export interface Product {
+    id: string;
+    materialCode: string;
+    description: string;
 }

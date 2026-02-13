@@ -91,7 +91,7 @@ const PlanColumn = ({
 };
 
 export function Calculator() {
-    const { globalSettings, costDrivers, setGlobalSetting, licenses, toggleLicense, projectedFleetSize } = useStore();
+    const { globalSettings, costDrivers, setGlobalSetting, licenses, toggleLicense, projectedFleetSize, products, activeProductId, setActiveProduct } = useStore();
 
     const getSymbol = (currency: Currency) => {
         switch (currency) {
