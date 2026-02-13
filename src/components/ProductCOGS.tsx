@@ -19,18 +19,18 @@ export function ProductCOGS() {
     return (
         <div className="space-y-8 animate-in fade-in duration-500">
             <div className="flex flex-col space-y-2">
-                <h2 className="text-3xl font-bold tracking-tight text-slate-900">Product COGS History</h2>
-                <p className="text-slate-500">Manage and review your saved profitability scenarios.</p>
+                <h2 className="text-3xl font-bold tracking-tight text-slate-900 dark:text-slate-100">Product COGS History</h2>
+                <p className="text-slate-500 dark:text-slate-400">Manage and review your saved profitability scenarios.</p>
             </div>
 
             {savedScenarios.length === 0 ? (
-                <Card className="border-dashed border-2 border-slate-200 bg-slate-50/50">
+                <Card className="border-dashed border-2 border-slate-200 bg-slate-50/50 dark:border-slate-700 dark:bg-slate-800/10">
                     <CardContent className="flex flex-col items-center justify-center py-20 text-center">
-                        <div className="bg-white p-4 rounded-full shadow-sm mb-4">
-                            <TrendingUp className="h-8 w-8 text-slate-400" />
+                        <div className="bg-white dark:bg-slate-900 p-4 rounded-full shadow-sm mb-4">
+                            <TrendingUp className="h-8 w-8 text-slate-400 dark:text-slate-500" />
                         </div>
-                        <h3 className="text-lg font-semibold text-slate-900 mb-1">No Scenarios Saved Yet</h3>
-                        <p className="text-slate-500 max-w-sm mx-auto">
+                        <h3 className="text-lg font-semibold text-slate-900 dark:text-slate-100 mb-1">No Scenarios Saved Yet</h3>
+                        <p className="text-slate-500 dark:text-slate-400 max-w-sm mx-auto">
                             Go to the Calculator and click "Save Scenario" to snapshot your unit economics.
                         </p>
                     </CardContent>
@@ -40,19 +40,19 @@ export function ProductCOGS() {
                     {savedScenarios.map((scenario) => (
                         <Card
                             key={scenario.id}
-                            className="hover:shadow-md transition-shadow cursor-pointer group border-slate-200"
+                            className="hover:shadow-md transition-shadow cursor-pointer group border-slate-200 dark:border-slate-800 dark:hover:border-indigo-900 dark:hover:shadow-indigo-900/20"
                             onClick={() => setSelectedScenario(scenario)}
                         >
                             <CardContent className="p-6 flex items-center justify-between">
                                 <div className="space-y-1">
                                     <div className="flex items-center gap-3">
-                                        <h3 className="font-semibold text-lg text-slate-900">{scenario.name}</h3>
-                                        <span className="text-xs font-medium px-2 py-0.5 rounded-full bg-slate-100 text-slate-600">
+                                        <h3 className="font-semibold text-lg text-slate-900 dark:text-slate-100">{scenario.name}</h3>
+                                        <span className="text-xs font-medium px-2 py-0.5 rounded-full bg-slate-100 text-slate-600 dark:bg-slate-800 dark:text-slate-300">
                                             {scenario.formattedDate}
                                         </span>
                                     </div>
-                                    <div className="text-sm text-slate-500">
-                                        Yearly Margin: <span className="font-medium text-emerald-600">{scenario.results.yearly.marginPercent.toFixed(1)}%</span>
+                                    <div className="text-sm text-slate-500 dark:text-slate-400">
+                                        Yearly Margin: <span className="font-medium text-emerald-600 dark:text-emerald-400">{scenario.results.yearly.marginPercent.toFixed(1)}%</span>
                                     </div>
                                 </div>
 

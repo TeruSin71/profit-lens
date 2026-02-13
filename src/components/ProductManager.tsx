@@ -33,16 +33,16 @@ export const ProductManager = () => {
         <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
             <div className="flex items-center justify-between">
                 <div>
-                    <h2 className="text-2xl font-semibold text-slate-900">Product Data</h2>
-                    <p className="text-slate-500">Manage product catalog for profitability analysis.</p>
+                    <h2 className="text-2xl font-semibold text-slate-900 dark:text-slate-100">Product Data</h2>
+                    <p className="text-slate-500 dark:text-slate-400">Manage product catalog for profitability analysis.</p>
                 </div>
             </div>
 
             <div className="grid gap-6 md:grid-cols-3">
                 {/* Add New Product Form */}
-                <Card className="md:col-span-1 border-indigo-100 shadow-sm">
-                    <CardHeader className="bg-indigo-50/50 pb-4">
-                        <CardTitle className="text-base font-semibold text-indigo-900 flex items-center">
+                <Card className="md:col-span-1 border-indigo-100 shadow-sm dark:border-indigo-900">
+                    <CardHeader className="bg-indigo-50/50 pb-4 dark:bg-indigo-950/20">
+                        <CardTitle className="text-base font-semibold text-indigo-900 flex items-center dark:text-indigo-300">
                             <Plus className="w-4 h-4 mr-2" />
                             Add New Product
                         </CardTitle>
@@ -81,14 +81,14 @@ export const ProductManager = () => {
                 </Card>
 
                 {/* Product List */}
-                <Card className="md:col-span-2">
+                <Card className="md:col-span-2 border-slate-200 dark:border-slate-800">
                     <CardHeader>
-                        <CardTitle className="text-base text-slate-700">Existing Products</CardTitle>
+                        <CardTitle className="text-base text-slate-700 dark:text-slate-200">Existing Products</CardTitle>
                     </CardHeader>
                     <CardContent>
                         {products.length === 0 ? (
-                            <div className="text-center py-12 text-slate-500 border-2 border-dashed border-slate-200 rounded-lg">
-                                <Package className="w-8 h-8 mx-auto mb-2 text-slate-300" />
+                            <div className="text-center py-12 text-slate-500 border-2 border-dashed border-slate-200 rounded-lg dark:border-slate-700 dark:text-slate-400">
+                                <Package className="w-8 h-8 mx-auto mb-2 text-slate-300 dark:text-slate-600" />
                                 <p>No products added yet.</p>
                             </div>
                         ) : (
@@ -101,12 +101,12 @@ export const ProductManager = () => {
                                 {products.map((product) => (
                                     <div
                                         key={product.id}
-                                        className="grid grid-cols-12 gap-4 items-center p-3 bg-slate-50 rounded-lg border border-slate-100 hover:border-indigo-200 transition-colors"
+                                        className="grid grid-cols-12 gap-4 items-center p-3 bg-slate-50 rounded-lg border border-slate-100 hover:border-indigo-200 transition-colors dark:bg-slate-800/50 dark:border-slate-800 dark:hover:border-indigo-800"
                                     >
-                                        <div className="col-span-3 font-medium text-slate-900 truncate">
+                                        <div className="col-span-3 font-medium text-slate-900 truncate dark:text-slate-200">
                                             {product.materialCode}
                                         </div>
-                                        <div className="col-span-8 text-slate-600 truncate">
+                                        <div className="col-span-8 text-slate-600 truncate dark:text-slate-400">
                                             {product.description}
                                         </div>
                                         <div className="col-span-1 flex justify-end">

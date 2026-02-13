@@ -45,17 +45,17 @@ export function PasswordGate({ children }: PasswordGateProps) {
     }
 
     return (
-        <div className="min-h-screen bg-slate-50 flex items-center justify-center p-4">
-            <div className="max-w-md w-full bg-white rounded-2xl shadow-xl border border-slate-100 overflow-hidden">
+        <div className="min-h-screen bg-slate-50 dark:bg-slate-950 flex items-center justify-center p-4">
+            <div className="max-w-md w-full bg-white dark:bg-slate-900 rounded-2xl shadow-xl border border-slate-100 dark:border-slate-800 overflow-hidden">
                 <div className="p-8 pb-6 text-center">
-                    <div className="mx-auto w-16 h-16 bg-indigo-50 rounded-full flex items-center justify-center mb-6">
+                    <div className="mx-auto w-16 h-16 bg-indigo-50 dark:bg-slate-800 rounded-full flex items-center justify-center mb-6">
                         <Lock className="w-8 h-8 text-indigo-600" />
                     </div>
 
-                    <h1 className="text-2xl font-bold text-slate-900 mb-2">
+                    <h1 className="text-2xl font-bold text-slate-900 dark:text-slate-100 mb-2">
                         ProfitLens Access
                     </h1>
-                    <p className="text-slate-500">
+                    <p className="text-slate-500 dark:text-slate-400">
                         Please enter the project password to continue.
                     </p>
                 </div>
@@ -72,10 +72,10 @@ export function PasswordGate({ children }: PasswordGateProps) {
                                 }}
                                 placeholder="Enter password"
                                 className={cn(
-                                    "w-full px-4 py-3 rounded-lg border bg-white focus:outline-none focus:ring-2 transition-all",
+                                    "w-full px-4 py-3 rounded-lg border bg-white dark:bg-slate-950 focus:outline-none focus:ring-2 transition-all",
                                     error
                                         ? "border-red-300 focus:ring-red-200 text-red-900 placeholder-red-300"
-                                        : "border-slate-200 focus:border-indigo-500 focus:ring-indigo-200 text-slate-900"
+                                        : "border-slate-200 dark:border-slate-700 focus:border-indigo-500 focus:ring-indigo-200 dark:focus:ring-indigo-900 text-slate-900 dark:text-slate-100 dark:placeholder-slate-500"
                                 )}
                                 autoFocus
                             />

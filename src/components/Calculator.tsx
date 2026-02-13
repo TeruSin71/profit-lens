@@ -27,8 +27,8 @@ const PlanColumn = ({
 
     return (
         <Card className={cn(
-            "relative transition-all duration-300",
-            highlight ? "border-indigo-200 shadow-md ring-1 ring-indigo-50" : "border-slate-100"
+            "relative transition-all duration-300 dark:bg-slate-900",
+            highlight ? "border-indigo-200 shadow-md ring-1 ring-indigo-50 dark:border-indigo-900 dark:ring-indigo-900" : "border-slate-100 dark:border-slate-800"
         )}>
             {highlight && (
                 <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-indigo-500 text-white text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider">
@@ -36,53 +36,53 @@ const PlanColumn = ({
                 </div>
             )}
             <CardHeader className="pb-4">
-                <CardTitle className="text-xl text-center text-slate-700">{title}</CardTitle>
+                <CardTitle className="text-xl text-center text-slate-700 dark:text-slate-200">{title}</CardTitle>
                 <div className="text-center pt-2">
-                    <span className="text-3xl font-bold text-slate-900">{symbol}{margin.toFixed(2)}</span>
-                    <span className="text-sm text-slate-500 block">Net Margin</span>
+                    <span className="text-3xl font-bold text-slate-900 dark:text-slate-50">{symbol}{margin.toFixed(2)}</span>
+                    <span className="text-sm text-slate-500 dark:text-slate-400 block">Net Margin</span>
                 </div>
             </CardHeader>
             <CardContent className="space-y-4">
-                <div className="flex justify-between items-center text-sm py-2 border-b border-slate-50">
-                    <span className="text-slate-500">Revenue</span>
-                    <span className="font-medium text-slate-900">{symbol}{revenue.toFixed(2)}</span>
+                <div className="flex justify-between items-center text-sm py-2 border-b border-slate-50 dark:border-slate-800">
+                    <span className="text-slate-500 dark:text-slate-400">Revenue</span>
+                    <span className="font-medium text-slate-900 dark:text-slate-100">{symbol}{revenue.toFixed(2)}</span>
                 </div>
 
                 <div className="space-y-2 pt-2">
                     <p className="text-xs font-semibold text-slate-400 uppercase tracking-wider">Cost Breakdown</p>
                     <div className="flex justify-between text-sm">
-                        <span className="text-slate-500">Cloud Infra</span>
-                        <span className="text-red-500 font-medium">-{symbol}{data.costs.infra.toFixed(2)}</span>
+                        <span className="text-slate-500 dark:text-slate-400">Cloud Infra</span>
+                        <span className="text-red-500 dark:text-red-400 font-medium">-{symbol}{data.costs.infra.toFixed(2)}</span>
                     </div>
                     <div className="flex justify-between text-sm">
-                        <span className="text-slate-500">Connectivity</span>
-                        <span className="text-red-500 font-medium">-{symbol}{data.costs.connectivity.toFixed(2)}</span>
+                        <span className="text-slate-500 dark:text-slate-400">Connectivity</span>
+                        <span className="text-red-500 dark:text-red-400 font-medium">-{symbol}{data.costs.connectivity.toFixed(2)}</span>
                     </div>
                     {data.costs.licenses > 0 && (
                         <div className="flex justify-between text-sm">
-                            <span className="text-slate-500">Licenses (SW)</span>
-                            <span className="text-red-500 font-medium">-{symbol}{data.costs.licenses.toFixed(2)}</span>
+                            <span className="text-slate-500 dark:text-slate-400">Licenses (SW)</span>
+                            <span className="text-red-500 dark:text-red-400 font-medium">-{symbol}{data.costs.licenses.toFixed(2)}</span>
                         </div>
                     )}
                     <div className="flex justify-between text-sm">
-                        <span className="text-slate-500">Transaction</span>
-                        <span className="text-red-500 font-medium">-{symbol}{data.costs.transaction.toFixed(2)}</span>
+                        <span className="text-slate-500 dark:text-slate-400">Transaction</span>
+                        <span className="text-red-500 dark:text-red-400 font-medium">-{symbol}{data.costs.transaction.toFixed(2)}</span>
                     </div>
                     {data.costs.labor > 0 && (
                         <div className="flex justify-between text-sm">
-                            <span className="text-slate-500">Labor (COGS)</span>
-                            <span className="text-red-500 font-medium">-{symbol}{data.costs.labor.toFixed(2)}</span>
+                            <span className="text-slate-500 dark:text-slate-400">Labor (COGS)</span>
+                            <span className="text-red-500 dark:text-red-400 font-medium">-{symbol}{data.costs.labor.toFixed(2)}</span>
                         </div>
                     )}
                     <div className="flex justify-between text-sm">
-                        <span className="text-slate-500">Billing Friction</span>
-                        <span className="text-red-500 font-medium">-{symbol}{data.costs.billing.toFixed(2)}</span>
+                        <span className="text-slate-500 dark:text-slate-400">Billing Friction</span>
+                        <span className="text-red-500 dark:text-red-400 font-medium">-{symbol}{data.costs.billing.toFixed(2)}</span>
                     </div>
                 </div>
 
-                <div className="pt-4 mt-2 border-t border-slate-100">
+                <div className="pt-4 mt-2 border-t border-slate-100 dark:border-slate-800">
                     <div className="flex justify-between items-center">
-                        <span className="text-sm font-medium text-slate-700">Margin %</span>
+                        <span className="text-sm font-medium text-slate-700 dark:text-slate-300">Margin %</span>
                         <span className={cn(
                             "text-lg font-bold",
                             marginPercent > 70 ? "text-emerald-500" : marginPercent > 40 ? "text-amber-500" : "text-red-500"
@@ -312,7 +312,7 @@ export function Calculator() {
                             <div className="flex justify-end space-x-2">
                                 <button
                                     onClick={() => setIsSaveDialogOpen(false)}
-                                    className="px-4 py-2 text-sm text-slate-600 hover:text-slate-900"
+                                    className="px-4 py-2 text-sm text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-200"
                                 >
                                     Cancel
                                 </button>
@@ -331,8 +331,8 @@ export function Calculator() {
             <div className="flex flex-col space-y-2">
                 <div className="flex justify-between items-center">
                     <div>
-                        <h2 className="text-3xl font-bold tracking-tight text-slate-900">Profitability Calculator</h2>
-                        <p className="text-slate-500">Compare unit economics across standard contract terms.</p>
+                        <h2 className="text-3xl font-bold tracking-tight text-slate-900 dark:text-slate-100">Profitability Calculator</h2>
+                        <p className="text-slate-500 dark:text-slate-400">Compare unit economics across standard contract terms.</p>
                     </div>
                     <button
                         onClick={() => setIsSaveDialogOpen(true)}
@@ -363,7 +363,7 @@ export function Calculator() {
                         <div className="space-y-2">
                             <Label>Product</Label>
                             <select
-                                className="flex h-10 w-full rounded-md border border-slate-200 bg-white px-3 py-2 text-sm ring-offset-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-2"
+                                className="flex h-10 w-full rounded-md border border-slate-200 bg-white px-3 py-2 text-sm ring-offset-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-2 dark:border-slate-800 dark:bg-slate-950 dark:ring-offset-slate-950 dark:text-slate-50"
                                 value={activeProductId || ''}
                                 onChange={(e) => setActiveProduct(e.target.value || null)}
                             >
@@ -378,7 +378,7 @@ export function Calculator() {
                         <div className="space-y-2">
                             <Label>Currency</Label>
                             <select
-                                className="flex h-10 w-full rounded-md border border-slate-200 bg-white px-3 py-2 text-sm ring-offset-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-2"
+                                className="flex h-10 w-full rounded-md border border-slate-200 bg-white px-3 py-2 text-sm ring-offset-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-2 dark:border-slate-800 dark:bg-slate-950 dark:ring-offset-slate-950 dark:text-slate-50"
                                 value={globalSettings.currency}
                                 onChange={(e) => setGlobalSetting('currency', e.target.value as Currency)}
                             >
@@ -393,12 +393,12 @@ export function Calculator() {
                         <div className="space-y-2">
                             <Label>Labor Mode</Label>
                             <div className="flex items-center space-x-2 h-10">
-                                <span className={cn("text-sm transition-colors", globalSettings.laborMode === 'standard' ? "font-bold text-indigo-600" : "text-slate-500")}>Standard</span>
+                                <span className={cn("text-sm transition-colors", globalSettings.laborMode === 'standard' ? "font-bold text-indigo-600 dark:text-indigo-400" : "text-slate-500 dark:text-slate-400")}>Standard</span>
                                 <Switch
                                     checked={globalSettings.laborMode === 'advanced'}
                                     onCheckedChange={(checked) => setGlobalSetting('laborMode', checked ? 'advanced' : 'standard')}
                                 />
-                                <span className={cn("text-sm transition-colors", globalSettings.laborMode === 'advanced' ? "font-bold text-indigo-600" : "text-slate-500")}>Advanced</span>
+                                <span className={cn("text-sm transition-colors", globalSettings.laborMode === 'advanced' ? "font-bold text-indigo-600 dark:text-indigo-400" : "text-slate-500 dark:text-slate-400")}>Advanced</span>
                             </div>
                         </div>
                         <div className="space-y-2">
@@ -458,11 +458,11 @@ export function Calculator() {
 
                         {/* Dynamic License Toggles */}
                         {licenses.map((license: License) => (
-                            <div key={license.id} className="flex items-center justify-between pt-2 border-t border-slate-50">
+                            <div key={license.id} className="flex items-center justify-between pt-2 border-t border-slate-50 dark:border-slate-800">
                                 <Label className="flex flex-col">
                                     <span className="flex items-center gap-2">
                                         {license.name}
-                                        <span className="text-[10px] uppercase bg-slate-100 text-slate-500 px-1.5 rounded-sm">{license.type}</span>
+                                        <span className="text-[10px] uppercase bg-slate-100 text-slate-500 px-1.5 rounded-sm dark:bg-slate-800 dark:text-slate-400">{license.type}</span>
                                     </span>
                                     <span className="font-normal text-xs text-slate-400">
                                         {license.type === 'per-user' && `${symbol}${license.costPerUnit}/mo per user`}

@@ -8,6 +8,7 @@ import { Switch } from './ui/switch';
 import { Label } from './ui/label';
 
 import { Currency } from '../types';
+import { useTheme } from '../components/ThemeProvider';
 
 interface PlanData {
     revenue: number;
@@ -45,10 +46,10 @@ const CustomTooltip = ({ active, payload, label, currency }: any) => {
     const symbol = getSymbol(currency);
     if (active && payload && payload.length) {
         return (
-            <div className="bg-white p-3 border border-slate-100 shadow-xl rounded-lg text-sm">
-                <p className="font-semibold text-slate-900 mb-2">{label}</p>
+            <div className="bg-white dark:bg-slate-900 p-3 border border-slate-100 dark:border-slate-800 shadow-xl rounded-lg text-sm">
+                <p className="font-semibold text-slate-900 dark:text-slate-100 mb-2">{label}</p>
                 {payload.map((entry: any, index: number) => (
-                    <div key={index} className="flex gap-2 items-center text-slate-600">
+                    <div key={index} className="flex gap-2 items-center text-slate-600 dark:text-slate-300">
                         <div className="w-2 h-2 rounded-full" style={{ backgroundColor: entry.color }} />
                         <span className="capitalize">{entry.name}:</span>
                         <span className="font-mono font-medium">{symbol}{Number(entry.value).toFixed(2)}</span>
@@ -63,6 +64,12 @@ const CustomTooltip = ({ active, payload, label, currency }: any) => {
 export function Visualization({ monthlyData, sixMonthData, yearlyData, currency }: VisualizationProps) {
     const symbol = getSymbol(currency);
     const [showDeferred, setShowDeferred] = useState(false);
+    const { theme } = useTheme();
+    const isDark = theme === 'dark' || (theme === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches);
+
+    const axisColor = isDark ? '#94a3b8' : '#64748b';
+    const gridColor = isDark ? '#1e293b' : '#e2e8f0';
+    const tooltipCursor = isDark ? '#334155' : '#f8fafc';
 
     // 1. True Cost Waterfall Data (Annualized view for comparison)
     // We need to normalize to 1 Year for fair comparison
@@ -170,10 +177,10 @@ export function Visualization({ monthlyData, sixMonthData, yearlyData, currency 
                         <div className="h-[300px] w-full">
                             <ResponsiveContainer width="100%" height="100%">
                                 <BarChart data={waterfallData} margin={{ top: 20, right: 30, left: 20, bottom: 5 }}>
-                                    <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e2e8f0" />
-                                    <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{ fontSize: 12, fill: '#64748b' }} dy={10} />
-                                    <YAxis axisLine={false} tickLine={false} tick={{ fontSize: 12, fill: '#64748b' }} tickFormatter={(value) => `${symbol}${value}`} />
-                                    <Tooltip content={<CustomTooltip currency={currency} />} cursor={{ fill: '#f8fafc' }} />
+                                    <CartesianGrid strokeDasharray="3 3" vertical={false} stroke={gridColor} />
+                                    <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{ fontSize: 12, fill: axisColor }} dy={10} />
+                                    <YAxis axisLine={false} tickLine={false} tick={{ fontSize: 12, fill: axisColor }} tickFormatter={(value) => `${symbol}${value}`} />
+                                    <Tooltip content={<CustomTooltip currency={currency} />} cursor={{ fill: tooltipCursor }} />
                                     <Legend iconType="circle" wrapperStyle={{ paddingTop: '20px' }} />
                                     <Bar dataKey="Infra" stackId="a" fill="#3b82f6" radius={[0, 0, 4, 4]} />
                                     <Bar dataKey="Connectivity" stackId="a" fill="#8b5cf6" />
@@ -195,9 +202,9 @@ export function Visualization({ monthlyData, sixMonthData, yearlyData, currency 
                         <div className="h-[300px] w-full">
                             <ResponsiveContainer width="100%" height="100%">
                                 <LineChart data={breakEvenData} margin={{ top: 20, right: 30, left: 20, bottom: 5 }}>
-                                    <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e2e8f0" />
-                                    <XAxis dataKey="month" axisLine={false} tickLine={false} tick={{ fontSize: 12, fill: '#64748b' }} dy={10} />
-                                    <YAxis axisLine={false} tickLine={false} tick={{ fontSize: 12, fill: '#64748b' }} tickFormatter={(value) => `${symbol}${value}`} />
+                                    <CartesianGrid strokeDasharray="3 3" vertical={false} stroke={gridColor} />
+                                    <XAxis dataKey="month" axisLine={false} tickLine={false} tick={{ fontSize: 12, fill: axisColor }} dy={10} />
+                                    <YAxis axisLine={false} tickLine={false} tick={{ fontSize: 12, fill: axisColor }} tickFormatter={(value) => `${symbol}${value}`} />
                                     <Tooltip content={<CustomTooltip currency={currency} />} />
                                     <Legend wrapperStyle={{ paddingTop: '20px' }} />
                                     <Line type="monotone" dataKey="Monthly Rev" stroke="#3b82f6" strokeWidth={2} dot={false} />
@@ -224,9 +231,9 @@ export function Visualization({ monthlyData, sixMonthData, yearlyData, currency 
                     <div className="h-[250px] w-full">
                         <ResponsiveContainer width="100%" height="100%">
                             <ComposedChart data={deferredData} margin={{ top: 20, right: 30, left: 20, bottom: 5 }}>
-                                <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e2e8f0" />
-                                <XAxis dataKey="month" axisLine={false} tickLine={false} tick={{ fontSize: 12, fill: '#64748b' }} />
-                                <YAxis axisLine={false} tickLine={false} tick={{ fontSize: 12, fill: '#64748b' }} tickFormatter={(value) => `${symbol}${value}`} />
+                                <CartesianGrid strokeDasharray="3 3" vertical={false} stroke={gridColor} />
+                                <XAxis dataKey="month" axisLine={false} tickLine={false} tick={{ fontSize: 12, fill: axisColor }} />
+                                <YAxis axisLine={false} tickLine={false} tick={{ fontSize: 12, fill: axisColor }} tickFormatter={(value) => `${symbol}${value}`} />
                                 <Tooltip content={<CustomTooltip currency={currency} />} />
                                 <Legend />
                                 <Area type="stepAfter" dataKey="Cash Collected" fill="#ecfdf5" stroke="#10b981" strokeWidth={2} />

@@ -94,11 +94,12 @@ export const generateMarketReport = (
     yPos += 10;
 
     if (competitors.length > 0) {
-        const compHeaders = [["Competitor Name", "Estimated Price", "Key Differentiator"]];
+        const compHeaders = [["Competitor Name", "Price", "Key Features", "Target Audience"]];
         const compData = competitors.map(c => [
             c.name,
-            c.price_monthly,
-            c.differentiation
+            c.price,
+            c.features,
+            c.audience
         ]);
 
         autoTable(doc, {

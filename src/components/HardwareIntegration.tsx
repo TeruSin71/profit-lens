@@ -43,14 +43,14 @@ export function HardwareIntegration() {
     return (
         <div className="space-y-6 animate-in fade-in duration-500">
             <div className="flex flex-col space-y-2">
-                <h2 className="text-3xl font-bold tracking-tight text-slate-900">Hardware & Integration</h2>
-                <p className="text-slate-500">Manage Capital Expenditures (CapEx) for physical assets and installation.</p>
+                <h2 className="text-3xl font-bold tracking-tight text-slate-900 dark:text-slate-100">Hardware & Integration</h2>
+                <p className="text-slate-500 dark:text-slate-400">Manage Capital Expenditures (CapEx) for physical assets and installation.</p>
             </div>
 
             <div className="grid gap-6 md:grid-cols-3">
-                <Card className="md:col-span-2">
+                <Card className="md:col-span-2 shadow-sm border-slate-200 dark:border-slate-800">
                     <CardHeader>
-                        <CardTitle>Hardware List</CardTitle>
+                        <CardTitle className="text-slate-900 dark:text-slate-100">Hardware List</CardTitle>
                     </CardHeader>
                     <CardContent>
                         <Table>
@@ -109,10 +109,10 @@ export function HardwareIntegration() {
                             </TableBody>
                         </Table>
 
-                        <div className="mt-6 p-4 bg-slate-50 rounded-lg border border-slate-200 flex items-center gap-4">
+                        <div className="mt-6 p-4 bg-slate-50 rounded-lg border border-slate-200 flex items-center gap-4 dark:bg-slate-800 dark:border-slate-700">
                             <div className="flex-1 grid grid-cols-2 gap-4">
                                 <div>
-                                    <Label className="text-xs">New Item Name</Label>
+                                    <Label className="text-xs text-slate-600 dark:text-slate-400">New Item Name</Label>
                                     <Input
                                         placeholder="e.g. Mounting Bracket"
                                         value={newItemName}
@@ -121,7 +121,7 @@ export function HardwareIntegration() {
                                     />
                                 </div>
                                 <div>
-                                    <Label className="text-xs">Cost ($)</Label>
+                                    <Label className="text-xs text-slate-600 dark:text-slate-400">Cost ($)</Label>
                                     <Input
                                         type="number"
                                         placeholder="0.00"
@@ -138,27 +138,27 @@ export function HardwareIntegration() {
                     </CardContent>
                 </Card>
 
-                <Card>
+                <Card className="shadow-sm border-slate-200 dark:border-slate-800">
                     <CardHeader>
-                        <CardTitle>CapEx Summary</CardTitle>
+                        <CardTitle className="text-slate-900 dark:text-slate-100">CapEx Summary</CardTitle>
                     </CardHeader>
                     <CardContent>
                         <div className="text-center py-6">
-                            <p className="text-sm text-slate-500 font-medium uppercase tracking-wide">Total Hardware & Installation</p>
-                            <div className="text-4xl font-bold text-slate-900 mt-2">
+                            <p className="text-sm text-slate-500 font-medium uppercase tracking-wide dark:text-slate-400">Total Hardware & Installation</p>
+                            <div className="text-4xl font-bold text-slate-900 mt-2 dark:text-slate-100">
                                 ${totalCapEx.toLocaleString()}
                             </div>
-                            <p className="text-xs text-slate-400 mt-2">One-time operational setup costs</p>
+                            <p className="text-xs text-slate-400 mt-2 dark:text-slate-500">One-time operational setup costs</p>
                         </div>
 
                         <div className="space-y-4 mt-6 border-t pt-6">
                             <div className="flex justify-between text-sm">
-                                <span className="text-slate-600">Hardware Count</span>
-                                <span className="font-medium text-slate-900">{hardware.length} items</span>
+                                <span className="text-slate-600 dark:text-slate-400">Hardware Count</span>
+                                <span className="font-medium text-slate-900 dark:text-slate-100">{hardware.length} items</span>
                             </div>
                             <div className="flex justify-between text-sm">
-                                <span className="text-slate-600">Total Units</span>
-                                <span className="font-medium text-slate-900">
+                                <span className="text-slate-600 dark:text-slate-400">Total Units</span>
+                                <span className="font-medium text-slate-900 dark:text-slate-100">
                                     {hardware.reduce((acc, item) => acc + item.quantity, 0)} units
                                 </span>
                             </div>

@@ -15,8 +15,8 @@ const NavItem = ({ icon: Icon, label, isActive, onClick }: NavItemProps) => {
             className={cn(
                 "flex items-center w-full px-4 py-3 text-sm font-medium transition-colors rounded-lg group",
                 isActive
-                    ? "bg-indigo-50 text-indigo-700"
-                    : "text-slate-600 hover:bg-slate-50 hover:text-slate-900"
+                    ? "bg-indigo-50 text-indigo-700 dark:bg-slate-800 dark:text-indigo-400"
+                    : "text-slate-600 hover:bg-slate-50 hover:text-slate-900 dark:text-slate-400 dark:hover:bg-slate-800 dark:hover:text-slate-200"
             )}
         >
             <Icon className={cn("w-5 h-5 mr-3", isActive ? "text-indigo-600" : "text-slate-400 group-hover:text-slate-600")} />
@@ -29,14 +29,14 @@ const NavItem = ({ icon: Icon, label, isActive, onClick }: NavItemProps) => {
 export function Sidebar({ currentView, setView }: { currentView: string; setView: (view: string) => void }) {
 
     return (
-        <aside className="fixed inset-y-0 left-0 z-10 w-64 bg-white border-r border-slate-200">
+        <aside className="fixed inset-y-0 left-0 z-10 w-64 bg-white dark:bg-slate-900 border-r border-slate-200 dark:border-slate-800">
             <div className="flex flex-col h-full">
-                <div className="flex flex-col h-16 px-6 border-b border-slate-100 justify-center">
+                <div className="flex flex-col h-16 px-6 border-b border-slate-100 justify-center dark:border-slate-800">
                     <div className="flex items-center space-x-2">
                         <div className="w-8 h-8 bg-indigo-600 rounded-lg flex items-center justify-center">
                             <span className="text-white font-bold text-lg">P</span>
                         </div>
-                        <span className="text-lg font-bold text-slate-900">ProfitLens</span>
+                        <span className="text-lg font-bold text-slate-900 dark:text-slate-100">ProfitLens</span>
                     </div>
                 </div>
 

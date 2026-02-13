@@ -5,6 +5,7 @@ import { Card, CardContent } from './ui/card';
 import { Button } from './ui/button';
 import { Textarea } from './ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './ui/select';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from './ui/table';
 import { generateMarketReport } from '../utils/pdfGenerator';
 import { Loader2, TrendingDown, Scale, Search, Sparkles, AlertCircle, FileDown } from 'lucide-react';
 import { cn } from '../lib/utils';
@@ -63,6 +64,7 @@ export function MarketComparison() {
     };
 
     const getPriceValue = (priceStr: string) => {
+        if (!priceStr) return 0;
         // Extract number from string like "$55.00", handle "Per Camera" text gracefully (returns 0 or NaN)
         return parseFloat(priceStr.replace(/[^0-9.]/g, '')) || 0;
     };
@@ -78,8 +80,8 @@ export function MarketComparison() {
         <div className="space-y-8 animate-in fade-in duration-500 max-w-6xl mx-auto pb-20">
             <div className="flex justify-between items-start">
                 <div className="flex flex-col space-y-2">
-                    <h2 className="text-3xl font-bold tracking-tight text-slate-900">Live Market Analysis</h2>
-                    <p className="text-slate-500">Benchmark your unit economics against real-world data from the Gemini API.</p>
+                    <h2 className="text-3xl font-bold tracking-tight text-slate-900 dark:text-slate-100">Live Market Analysis</h2>
+                    <p className="text-slate-500 dark:text-slate-400">Benchmark your unit economics against real-world data from the Gemini API.</p>
                 </div>
                 {selectedScenario && (
                     <Button
@@ -94,12 +96,12 @@ export function MarketComparison() {
             </div>
 
             {/* Controller Section */}
-            <Card className="border-indigo-100 shadow-sm bg-white">
+            <Card className="border-indigo-100 shadow-sm bg-white dark:bg-slate-900 dark:border-indigo-900">
                 <CardContent className="p-6 space-y-6">
                     {/* Scenario Selection */}
                     <div className="flex items-center gap-6">
                         <div className="flex-1 space-y-2">
-                            <label className="text-sm font-semibold text-slate-700">Select Scenario to Compare</label>
+                            <label className="text-sm font-semibold text-slate-700 dark:text-slate-300">Select Scenario to Compare</label>
                             <Select value={selectedScenarioId} onValueChange={setSelectedScenarioId}>
                                 <SelectTrigger className="w-full">
                                     <SelectValue placeholder="Choose a saved scenario..." />
@@ -115,13 +117,13 @@ export function MarketComparison() {
                         </div>
                     </div>
 
-                    <div className="border-t border-slate-100 my-4"></div>
+                    <div className="border-t border-slate-100 my-4 dark:border-slate-800"></div>
 
                     {/* Interactive competitor Search */}
                     <div className="space-y-3">
                         <div className="flex justify-between items-center">
-                            <label className="text-sm font-semibold text-slate-700 flex items-center gap-2">
-                                <Search className="w-4 h-4 text-indigo-500" />
+                            <label className="text-sm font-semibold text-slate-700 flex items-center gap-2 dark:text-slate-300">
+                                <Search className="w-4 h-4 text-indigo-500 dark:text-indigo-400" />
                                 Find Real Competitors
                             </label>
                             <span className={cn("text-xs", productDescription.length > 800 ? "text-red-500" : "text-slate-400")}>
@@ -133,7 +135,7 @@ export function MarketComparison() {
                                 placeholder="Describe your product (e.g., 'A solar-powered coffee maker for camping')..."
                                 value={productDescription}
                                 onChange={(e) => setProductDescription(e.target.value.slice(0, 800))}
-                                className="flex-1 min-h-[80px] resize-none bg-slate-50 focus:bg-white transition-colors"
+                                className="flex-1 min-h-[80px] resize-none bg-slate-50 focus:bg-white transition-colors dark:bg-slate-800 dark:focus:bg-slate-900 dark:border-slate-700"
                             />
                             <Button
                                 onClick={handleManualAnalyze}
@@ -173,9 +175,9 @@ export function MarketComparison() {
                 <div className="grid md:grid-cols-2 gap-8">
                     {/* Left Column: Our Economics */}
                     <div className="space-y-6">
-                        <div className="flex items-center space-x-2 pb-2 border-b border-slate-200">
+                        <div className="flex items-center space-x-2 pb-2 border-b border-slate-200 dark:border-slate-800">
                             <div className="w-2 h-8 bg-indigo-500 rounded-full"></div>
-                            <h3 className="text-xl font-bold text-slate-900">Our Unit Economics</h3>
+                            <h3 className="text-xl font-bold text-slate-900 dark:text-slate-100">Our Unit Economics</h3>
                         </div>
 
                         <div className="space-y-4">
@@ -203,21 +205,21 @@ export function MarketComparison() {
 
                     {/* Right Column: Generic Competitor Landscape */}
                     <div className="space-y-6">
-                        <div className="flex items-center justify-between pb-2 border-b border-slate-200">
+                        <div className="flex items-center justify-between pb-2 border-b border-slate-200 dark:border-slate-800">
                             <div className="flex items-center space-x-2">
                                 <div className="w-2 h-8 bg-emerald-500 rounded-full"></div>
-                                <h3 className="text-xl font-bold text-slate-900">Market Intelligence</h3>
+                                <h3 className="text-xl font-bold text-slate-900 dark:text-slate-100">Market Intelligence</h3>
                             </div>
                             {loading && <span className="text-xs text-indigo-600 font-medium animate-pulse">Live Updating...</span>}
                         </div>
 
                         {loading ? (
                             <div className="space-y-4">
-                                <div className="flex items-center justify-center p-8 bg-slate-50 border border-slate-200 rounded-xl">
+                                <div className="flex items-center justify-center p-8 bg-slate-50 border border-slate-200 rounded-xl dark:bg-slate-800/10 dark:border-slate-800">
                                     <div className="flex flex-col items-center">
                                         <Loader2 className="h-8 w-8 text-indigo-600 animate-spin mb-4" />
-                                        <p className="text-sm font-medium text-slate-900">Searching live market...</p>
-                                        <p className="text-xs text-slate-500 mt-1">Fetching competitors via Gemini AI</p>
+                                        <p className="text-sm font-medium text-slate-900 dark:text-slate-100">Searching live market...</p>
+                                        <p className="text-xs text-slate-500 mt-1 dark:text-slate-400">Fetching competitors via Gemini AI</p>
                                     </div>
                                 </div>
                                 {[1, 2].map(i => (
@@ -225,46 +227,62 @@ export function MarketComparison() {
                                 ))}
                             </div>
                         ) : hasSearched && competitors.length > 0 ? (
-                            <div className="space-y-4">
-                                {competitors.map((comp, idx) => (
-                                    <Card key={idx} className="border-slate-200 shadow-sm bg-slate-50/50 hover:bg-white transition-colors">
-                                        <CardContent className="p-5">
-                                            <div className="flex justify-between items-start mb-2">
-                                                <h4 className="font-bold text-lg text-slate-800">{comp.name}</h4>
-                                                <div className="bg-green-100 text-green-800 px-3 py-1 rounded-full text-xs font-bold shadow-sm">
-                                                    {comp.price_monthly}
-                                                </div>
-                                            </div>
-                                            <p className="text-sm text-slate-600 mb-3 italic">"{comp.differentiation}"</p>
-
-                                            {isCheaper(selectedScenario.inputs.globalSettings.planPrice, comp.price_monthly) && (
-                                                <div className="inline-flex items-center px-2 py-1 bg-emerald-100 text-emerald-700 text-xs font-bold rounded-md">
-                                                    <TrendingDown className="w-3 h-3 mr-1" />
-                                                    We are price competitive
-                                                </div>
-                                            )}
-                                        </CardContent>
-                                    </Card>
-                                ))}
+                            <div className="bg-white rounded-lg border border-slate-200 overflow-hidden dark:bg-slate-900 dark:border-slate-800">
+                                <Table>
+                                    <TableHeader>
+                                        <TableRow>
+                                            <TableHead className="w-[25%]">Competitor</TableHead>
+                                            <TableHead className="w-[20%]">Price</TableHead>
+                                            <TableHead className="w-[30%]">Key Features</TableHead>
+                                            <TableHead className="w-[25%]">Target Audience</TableHead>
+                                        </TableRow>
+                                    </TableHeader>
+                                    <TableBody>
+                                        {competitors.map((comp, idx) => (
+                                            <TableRow key={idx}>
+                                                <TableCell className="font-medium text-slate-900 dark:text-slate-100">
+                                                    {comp.name}
+                                                    {isCheaper(selectedScenario.inputs.globalSettings.planPrice, comp.price) && (
+                                                        <span className="block mt-1 text-xs font-bold text-emerald-600 flex items-center dark:text-emerald-400">
+                                                            <TrendingDown className="w-3 h-3 mr-1" />
+                                                            We're Lower
+                                                        </span>
+                                                    )}
+                                                </TableCell>
+                                                <TableCell className="text-slate-600 dark:text-slate-400">
+                                                    <span className="inline-block px-2 py-1 rounded bg-slate-100 dark:bg-slate-800 text-xs font-semibold">
+                                                        {comp.price}
+                                                    </span>
+                                                </TableCell>
+                                                <TableCell className="text-sm text-slate-600 dark:text-slate-400">
+                                                    {comp.features}
+                                                </TableCell>
+                                                <TableCell className="text-sm text-slate-600 dark:text-slate-400">
+                                                    {comp.audience}
+                                                </TableCell>
+                                            </TableRow>
+                                        ))}
+                                    </TableBody>
+                                </Table>
                             </div>
                         ) : hasSearched && competitors.length === 0 ? (
-                            <div className="flex flex-col items-center justify-center p-8 bg-slate-50 border border-slate-200 rounded-xl text-slate-500">
+                            <div className="flex flex-col items-center justify-center p-8 bg-slate-50 border border-slate-200 rounded-xl text-slate-500 dark:bg-slate-800/10 dark:border-slate-800 dark:text-slate-400">
                                 <AlertCircle className="w-8 h-8 mb-2 opacity-50" />
                                 <p>No competitors found. Try a different description.</p>
                             </div>
                         ) : (
-                            <div className="flex flex-col items-center justify-center h-[300px] border-2 border-dashed border-slate-200 rounded-xl bg-slate-50 text-slate-400">
+                            <div className="flex flex-col items-center justify-center h-[300px] border-2 border-dashed border-slate-200 rounded-xl bg-slate-50 text-slate-400 dark:bg-slate-800/10 dark:border-slate-800 dark:text-slate-500">
                                 <Search className="w-12 h-12 mb-4 opacity-50" />
-                                <p className="font-medium text-slate-600">No Market Data Yet</p>
+                                <p className="font-medium text-slate-600 dark:text-slate-400">No Market Data Yet</p>
                                 <p className="text-sm px-8 text-center mt-2">Enter a product description above to see real-world competitor pricing.</p>
                             </div>
                         )}
                     </div>
                 </div>
             ) : (
-                <div className="flex flex-col items-center justify-center h-[300px] border-2 border-dashed border-slate-200 rounded-xl bg-slate-50 text-slate-400 mt-8">
+                <div className="flex flex-col items-center justify-center h-[300px] border-2 border-dashed border-slate-200 rounded-xl bg-slate-50 text-slate-400 mt-8 dark:bg-slate-800/10 dark:border-slate-800 dark:text-slate-500">
                     <Scale className="w-12 h-12 mb-4 opacity-50" />
-                    <p className="font-medium text-slate-600">No Scenario Selected</p>
+                    <p className="font-medium text-slate-600 dark:text-slate-400">No Scenario Selected</p>
                     <p className="text-sm">Please select or create a scenario to begin analysis.</p>
                 </div>
             )}
@@ -276,19 +294,19 @@ function EconomicsCard({ title, data, price, currency, highlight }: { title: str
     const symbol = currency === 'EUR' ? '€' : currency === 'GBP' ? '£' : '$';
 
     return (
-        <Card className={cn("border-l-4 transition-all hover:shadow-md", highlight ? "border-l-indigo-500 ring-1 ring-indigo-50" : "border-l-slate-300")}>
+        <Card className={cn("border-l-4 transition-all hover:shadow-md dark:bg-slate-900 dark:border-slate-800", highlight ? "border-l-indigo-500 ring-1 ring-indigo-50 dark:ring-indigo-900" : "border-l-slate-300 dark:border-l-slate-600")}>
             <CardContent className="p-5 flex justify-between items-center">
                 <div>
-                    <h4 className="font-semibold text-slate-500 text-sm uppercase tracking-wide">{title}</h4>
-                    <div className="text-2xl font-bold text-slate-900 mt-1">
+                    <h4 className="font-semibold text-slate-500 text-sm uppercase tracking-wide dark:text-slate-400">{title}</h4>
+                    <div className="text-2xl font-bold text-slate-900 mt-1 dark:text-slate-100">
                         {symbol}{price.toFixed(2)}
                     </div>
                 </div>
                 <div className="text-right">
-                    <div className="text-sm text-slate-500">COGS: <span className="font-medium">{symbol}{data.totalCost.toFixed(2)}</span></div>
+                    <div className="text-sm text-slate-500 dark:text-slate-400">COGS: <span className="font-medium">{symbol}{data.totalCost.toFixed(2)}</span></div>
                     <div className={cn(
                         "text-sm font-bold mt-1",
-                        data.marginPercent > 70 ? "text-emerald-600" : data.marginPercent > 40 ? "text-amber-600" : "text-red-500"
+                        data.marginPercent > 70 ? "text-emerald-600 dark:text-emerald-400" : data.marginPercent > 40 ? "text-amber-600 dark:text-amber-400" : "text-red-500 dark:text-red-400"
                     )}>
                         {data.marginPercent.toFixed(1)}% Margin
                     </div>

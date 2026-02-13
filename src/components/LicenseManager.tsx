@@ -30,20 +30,20 @@ export const LicenseManager = () => {
         <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
             <div className="flex items-center justify-between">
                 <div>
-                    <h2 className="text-2xl font-semibold text-slate-900">License Manager</h2>
-                    <p className="text-slate-500">Manage third-party software and integration costs.</p>
+                    <h2 className="text-2xl font-semibold text-slate-900 dark:text-slate-100">License Manager</h2>
+                    <p className="text-slate-500 dark:text-slate-400">Manage third-party software and integration costs.</p>
                 </div>
             </div>
 
             {/* Tab Navigation */}
-            <div className="flex space-x-1 bg-slate-100 p-1 rounded-xl">
+            <div className="flex space-x-1 bg-slate-100 dark:bg-slate-800 p-1 rounded-xl">
                 <button
                     onClick={() => setActiveTab('per-user')}
                     className={cn(
                         "flex-1 flex items-center justify-center py-2.5 text-sm font-medium rounded-lg transition-all duration-200",
                         activeTab === 'per-user'
-                            ? "bg-white text-indigo-600 shadow-sm"
-                            : "text-slate-500 hover:text-slate-900 hover:bg-slate-200/50"
+                            ? "bg-white text-indigo-600 shadow-sm dark:bg-indigo-900/30 dark:text-indigo-400"
+                            : "text-slate-500 hover:text-slate-900 hover:bg-slate-200/50 dark:text-slate-400 dark:hover:text-slate-200 dark:hover:bg-slate-700/50"
                     )}
                 >
                     <Users className="w-4 h-4 mr-2" />
@@ -54,8 +54,8 @@ export const LicenseManager = () => {
                     className={cn(
                         "flex-1 flex items-center justify-center py-2.5 text-sm font-medium rounded-lg transition-all duration-200",
                         activeTab === 'block'
-                            ? "bg-white text-indigo-600 shadow-sm"
-                            : "text-slate-500 hover:text-slate-900 hover:bg-slate-200/50"
+                            ? "bg-white text-indigo-600 shadow-sm dark:bg-indigo-900/30 dark:text-indigo-400"
+                            : "text-slate-500 hover:text-slate-900 hover:bg-slate-200/50 dark:text-slate-400 dark:hover:text-slate-200 dark:hover:bg-slate-700/50"
                     )}
                 >
                     <Box className="w-4 h-4 mr-2" />
@@ -66,8 +66,8 @@ export const LicenseManager = () => {
                     className={cn(
                         "flex-1 flex items-center justify-center py-2.5 text-sm font-medium rounded-lg transition-all duration-200",
                         activeTab === 'one-time'
-                            ? "bg-white text-indigo-600 shadow-sm"
-                            : "text-slate-500 hover:text-slate-900 hover:bg-slate-200/50"
+                            ? "bg-white text-indigo-600 shadow-sm dark:bg-indigo-900/30 dark:text-indigo-400"
+                            : "text-slate-500 hover:text-slate-900 hover:bg-slate-200/50 dark:text-slate-400 dark:hover:text-slate-200 dark:hover:bg-slate-700/50"
                     )}
                 >
                     <Clock className="w-4 h-4 mr-2" />
@@ -77,19 +77,19 @@ export const LicenseManager = () => {
 
             {/* Global Settings for Block Licenses */}
             {activeTab === 'block' && (
-                <Card className="bg-indigo-50/50 border-indigo-100">
+                <Card className="bg-indigo-50/50 border-indigo-100 dark:bg-indigo-950/20 dark:border-indigo-900">
                     <CardContent className="pt-6">
                         <div className="flex items-center justify-between">
                             <div className="space-y-1">
-                                <Label className="text-indigo-900">Projected Fleet Size</Label>
-                                <p className="text-sm text-indigo-600/80">Used to calculate efficiency for block licenses.</p>
+                                <Label className="text-indigo-900 dark:text-indigo-300">Projected Fleet Size</Label>
+                                <p className="text-sm text-indigo-600/80 dark:text-indigo-400/80">Used to calculate efficiency for block licenses.</p>
                             </div>
                             <div className="w-32">
                                 <Input
                                     type="number"
                                     value={projectedFleetSize}
                                     onChange={(e: React.ChangeEvent<HTMLInputElement>) => setProjectedFleetSize(Number(e.target.value))}
-                                    className="bg-white border-indigo-200 focus-visible:ring-indigo-500"
+                                    className="bg-white border-indigo-200 focus-visible:ring-indigo-500 dark:bg-slate-900 dark:border-indigo-800"
                                 />
                             </div>
                         </div>
@@ -122,17 +122,17 @@ const LicenseCard = ({ license, updateLicense, fleetSize, symbol }: LicenseCardP
                     <div className="flex items-center space-x-3">
                         <div className={cn(
                             "p-2 rounded-lg",
-                            license.type === 'per-user' ? "bg-blue-50 text-blue-600" :
-                                license.type === 'block' ? "bg-purple-50 text-purple-600" :
-                                    "bg-amber-50 text-amber-600"
+                            license.type === 'per-user' ? "bg-blue-50 text-blue-600 dark:bg-blue-900/20 dark:text-blue-400" :
+                                license.type === 'block' ? "bg-purple-50 text-purple-600 dark:bg-purple-900/20 dark:text-purple-400" :
+                                    "bg-amber-50 text-amber-600 dark:bg-amber-900/20 dark:text-amber-400"
                         )}>
                             {license.type === 'per-user' && <Users className="w-5 h-5" />}
                             {license.type === 'block' && <Box className="w-5 h-5" />}
                             {license.type === 'one-time' && <Zap className="w-5 h-5" />}
                         </div>
                         <div>
-                            <CardTitle className="text-base font-semibold text-slate-900">{license.name}</CardTitle>
-                            <p className="text-sm text-slate-500 capitalize">{license.type.replace('-', ' ')} License</p>
+                            <CardTitle className="text-base font-semibold text-slate-900 dark:text-slate-100">{license.name}</CardTitle>
+                            <p className="text-sm text-slate-500 capitalize dark:text-slate-400">{license.type.replace('-', ' ')} License</p>
                         </div>
                     </div>
                 </div>
@@ -163,7 +163,7 @@ const LicenseCard = ({ license, updateLicense, fleetSize, symbol }: LicenseCardP
                                 <div className="space-y-2">
                                     <Label>Billing Frequency</Label>
                                     <select
-                                        className="flex h-10 w-full rounded-md border border-slate-200 bg-white px-3 py-2 text-sm ring-offset-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                                        className="flex h-10 w-full rounded-md border border-slate-200 bg-white px-3 py-2 text-sm ring-offset-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 dark:border-slate-800 dark:bg-slate-950 dark:ring-offset-slate-950 dark:text-slate-50"
                                         value={license.billingFrequency}
                                         onChange={(e: React.ChangeEvent<HTMLSelectElement>) => updateLicense(license.id, { billingFrequency: e.target.value as 'monthly' | 'yearly' })}
                                     >
@@ -218,25 +218,25 @@ const LicenseCard = ({ license, updateLicense, fleetSize, symbol }: LicenseCardP
                     </div>
 
                     {/* Summary / Preview */}
-                    <div className="bg-slate-50 rounded-lg p-4 flex flex-col justify-center space-y-3">
-                        <h4 className="text-sm font-medium text-slate-700">Cost Impact Preview</h4>
+                    <div className="bg-slate-50 rounded-lg p-4 flex flex-col justify-center space-y-3 dark:bg-slate-800/50">
+                        <h4 className="text-sm font-medium text-slate-700 dark:text-slate-300">Cost Impact Preview</h4>
 
                         {license.type === 'per-user' && (
                             <div className="flex justify-between items-center text-sm">
-                                <span className="text-slate-500">Monthly Cost:</span>
-                                <span className="font-semibold text-slate-900">{symbol}{license.costPerUnit?.toFixed(2)} / user</span>
+                                <span className="text-slate-500 dark:text-slate-400">Monthly Cost:</span>
+                                <span className="font-semibold text-slate-900 dark:text-slate-100">{symbol}{license.costPerUnit?.toFixed(2)} / user</span>
                             </div>
                         )}
 
                         {license.type === 'block' && (
                             <>
                                 <div className="flex justify-between items-center text-sm">
-                                    <span className="text-slate-500">Blocks Needed:</span>
-                                    <span className="font-medium text-slate-900">{Math.ceil(fleetSize / (license.unitsPerBlock || 1))}</span>
+                                    <span className="text-slate-500 dark:text-slate-400">Blocks Needed:</span>
+                                    <span className="font-medium text-slate-900 dark:text-slate-100">{Math.ceil(fleetSize / (license.unitsPerBlock || 1))}</span>
                                 </div>
                                 <div className="flex justify-between items-center text-sm">
-                                    <span className="text-slate-500">Efficiency Cost:</span>
-                                    <span className="font-semibold text-slate-900">
+                                    <span className="text-slate-500 dark:text-slate-400">Efficiency Cost:</span>
+                                    <span className="font-semibold text-slate-900 dark:text-slate-100">
                                         {symbol}{((Math.ceil(fleetSize / (license.unitsPerBlock || 1)) * (license.blockPrice || 0)) / fleetSize).toFixed(2)} / unit
                                     </span>
                                 </div>
@@ -245,8 +245,8 @@ const LicenseCard = ({ license, updateLicense, fleetSize, symbol }: LicenseCardP
 
                         {license.type === 'one-time' && (
                             <div className="flex justify-between items-center text-sm">
-                                <span className="text-slate-500">Amortized Monthly:</span>
-                                <span className="font-semibold text-slate-900">
+                                <span className="text-slate-500 dark:text-slate-400">Amortized Monthly:</span>
+                                <span className="font-semibold text-slate-900 dark:text-slate-100">
                                     {symbol}{((license.oneTimeFee || 0) / (license.amortizationTermMonths || 1)).toFixed(2)} / mo
                                 </span>
                             </div>

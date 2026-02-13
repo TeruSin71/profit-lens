@@ -16,15 +16,15 @@ export function CostDrivers() {
     return (
         <div className="space-y-6 animate-in fade-in duration-500">
             <div className="flex flex-col space-y-2">
-                <h2 className="text-3xl font-bold tracking-tight text-slate-900">Cost Drivers</h2>
-                <p className="text-slate-500">Configure the unit economics and underlying costs for the platform.</p>
+                <h2 className="text-3xl font-bold tracking-tight text-slate-900 dark:text-slate-100">Cost Drivers</h2>
+                <p className="text-slate-500 dark:text-slate-400">Configure the unit economics and underlying costs for the platform.</p>
             </div>
 
             <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
                 {/* Infrastructure Group */}
                 <Card>
                     <CardHeader>
-                        <CardTitle className="text-lg">Infrastructure</CardTitle>
+                        <CardTitle className="text-lg text-slate-900 dark:text-slate-100">Infrastructure</CardTitle>
                     </CardHeader>
                     <CardContent className="space-y-4">
                         <div className="space-y-2">
@@ -69,7 +69,7 @@ export function CostDrivers() {
                 {/* Connectivity Group */}
                 <Card>
                     <CardHeader>
-                        <CardTitle className="text-lg">Connectivity</CardTitle>
+                        <CardTitle className="text-lg text-slate-900 dark:text-slate-100">Connectivity</CardTitle>
                     </CardHeader>
                     <CardContent className="space-y-4">
                         <div className="space-y-2">
@@ -114,7 +114,7 @@ export function CostDrivers() {
                 {/* Billing & Labor Group */}
                 <Card>
                     <CardHeader>
-                        <CardTitle className="text-lg">Billing & Labor</CardTitle>
+                        <CardTitle className="text-lg text-slate-900 dark:text-slate-100">Billing & Labor</CardTitle>
                     </CardHeader>
                     <CardContent className="space-y-4">
                         <div className="space-y-2">
