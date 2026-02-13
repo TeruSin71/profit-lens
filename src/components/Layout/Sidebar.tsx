@@ -1,5 +1,4 @@
 import { LayoutDashboard, Settings, Calculator, Server, FileKey, Package, History, Scale } from 'lucide-react';
-import { UserButton, useUser } from "@clerk/clerk-react";
 import { cn } from '../../lib/utils';
 
 interface NavItemProps {
@@ -28,7 +27,6 @@ const NavItem = ({ icon: Icon, label, isActive, onClick }: NavItemProps) => {
 
 
 export function Sidebar({ currentView, setView }: { currentView: string; setView: (view: string) => void }) {
-    const { user } = useUser();
 
     return (
         <aside className="fixed inset-y-0 left-0 z-10 w-64 bg-white border-r border-slate-200">
@@ -97,19 +95,7 @@ export function Sidebar({ currentView, setView }: { currentView: string; setView
                     />
                 </div>
 
-                <div className="p-4 border-t border-slate-100">
-                    <div className="flex items-center p-3 bg-slate-50 rounded-lg">
-                        <UserButton />
-                        <div className="ml-3 overflow-hidden">
-                            <p className="text-sm font-medium text-slate-900 truncate">
-                                {user?.fullName || user?.primaryEmailAddress?.emailAddress}
-                            </p>
-                            <p className="text-xs text-slate-500 truncate">
-                                {user?.primaryEmailAddress?.emailAddress}
-                            </p>
-                        </div>
-                    </div>
-                </div>
+
             </div>
         </aside>
     );

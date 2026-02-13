@@ -3,10 +3,7 @@ import { Sidebar } from './components/Layout/Sidebar';
 import { MainLayout } from './components/Layout/MainLayout';
 import { CostDrivers } from './components/CostDrivers';
 import { Calculator } from './components/Calculator';
-
 import { LicenseManager } from './components/LicenseManager';
-
-
 import { ProductManager } from './components/ProductManager';
 import { ProductCOGS } from './components/ProductCOGS';
 import { MarketComparison } from './components/MarketComparison';
@@ -61,17 +58,10 @@ const DashboardPlaceholder = ({ setView }: { setView: (view: string) => void }) 
     </div>
 );
 
-import { SignedIn, SignedOut } from "@clerk/clerk-react";
-import Login from "./components/Auth/Login";
-import DomainGuard from "./components/Auth/DomainGuard";
-
-// ... existing code ...
-
 function App() {
     const [currentView, setCurrentView] = useState('dashboard');
 
     const renderContent = () => {
-        // ... existing switch statement ...
         switch (currentView) {
             case 'dashboard':
                 return <DashboardPlaceholder setView={setCurrentView} />;
@@ -95,21 +85,12 @@ function App() {
     };
 
     return (
-        <>
-            <SignedOut>
-                <Login />
-            </SignedOut>
-            <SignedIn>
-                <DomainGuard>
-                    <div className="min-h-screen bg-slate-50 font-sans">
-                        <Sidebar currentView={currentView} setView={setCurrentView} />
-                        <MainLayout>
-                            {renderContent()}
-                        </MainLayout>
-                    </div>
-                </DomainGuard>
-            </SignedIn>
-        </>
+        <div className="min-h-screen bg-slate-50 font-sans">
+            <Sidebar currentView={currentView} setView={setCurrentView} />
+            <MainLayout>
+                {renderContent()}
+            </MainLayout>
+        </div>
     );
 }
 
