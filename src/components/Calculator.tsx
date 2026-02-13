@@ -270,6 +270,21 @@ export function Calculator() {
                             />
                         </div>
                         <div className="space-y-2">
+                            <Label>Product</Label>
+                            <select
+                                className="flex h-10 w-full rounded-md border border-slate-200 bg-white px-3 py-2 text-sm ring-offset-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-2"
+                                value={activeProductId || ''}
+                                onChange={(e) => setActiveProduct(e.target.value || null)}
+                            >
+                                <option value="">Select a Product...</option>
+                                {products.map((p) => (
+                                    <option key={p.id} value={p.id}>
+                                        {p.materialCode} - {p.description}
+                                    </option>
+                                ))}
+                            </select>
+                        </div>
+                        <div className="space-y-2">
                             <Label>Currency</Label>
                             <select
                                 className="flex h-10 w-full rounded-md border border-slate-200 bg-white px-3 py-2 text-sm ring-offset-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-2"
