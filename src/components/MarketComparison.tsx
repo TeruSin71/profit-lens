@@ -49,10 +49,15 @@ export function MarketComparison() {
         setError(null);
         try {
             const results = await fetchCompetitorAnalysis(productDescription);
-            if (results.length === 0) {
+            if (results.competitors.length === 0) {
                 setError("Unable to fetch data. Please check your network or try again.");
             }
-            setCompetitors(results);
+            setCompetitors(results.competitors);
+
+            // Optional: Warn if using cached data
+            if (results.source === 'cached') {
+                setError("Live analysis unavailable. Showing cached data.");
+            }
         } catch (err: any) {
             console.error("Market analysis failed:", err);
             // Display the specific error message thrown by the service

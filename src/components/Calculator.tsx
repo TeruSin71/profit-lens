@@ -147,7 +147,7 @@ export function Calculator() {
         // Prompt says: "Connectivity: SIM/Cellular Fee ($/Active SIM)". Let's assume it applies if Cellular Backup is ENABLED.
         // Re-reading prompt: "Connectivity: SIM/Cellular Fee...". 
         // Explicit toggle "Cellular Backup". Logic: If toggle is ON, apply sim fee.
-        const simCost = globalSettings.isCellularBackupEnabled
+        const simCost = globalSettings.isCellularEnabled
             ? (costDrivers.simFeePerActiveSIM * months * discount)
             : 0;
 
@@ -201,7 +201,7 @@ export function Calculator() {
         // I will assume it's a Monthly cost per account for "Live Monitoring".
 
         const laborCost = (globalSettings.laborMode === 'advanced' && globalSettings.isLiveMonitoringEnabled)
-            ? (costDrivers.agentHourlyRate * months) // treating agentHourlyRate as Monthly Cost for now based on formula
+            ? (costDrivers.agentMonthlyRate * months)
             : 0;
 
         // 5. Billing Friction: Dunning Cost * Risk Factor
@@ -441,8 +441,8 @@ export function Calculator() {
                                 <span className="font-normal text-xs text-slate-400">Enables SIM & Connectivity costs</span>
                             </Label>
                             <Switch
-                                checked={globalSettings.isCellularBackupEnabled}
-                                onCheckedChange={(c) => setGlobalSetting('isCellularBackupEnabled', c)}
+                                checked={globalSettings.isCellularEnabled}
+                                onCheckedChange={(c) => setGlobalSetting('isCellularEnabled', c)}
                             />
                         </div>
                         <div className="flex items-center justify-between">

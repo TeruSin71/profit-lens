@@ -14,7 +14,7 @@ const defaultCostDrivers: CostDrivers = {
     gatewayFeePercent: 2.9,
     gatewayFixedFee: 0.30,
     dunningCost: 15.00,
-    agentHourlyRate: 25.00,
+    agentMonthlyRate: 25.00,
 };
 
 const defaultGlobalSettings: GlobalSettings = {
@@ -23,7 +23,7 @@ const defaultGlobalSettings: GlobalSettings = {
     avgDataUsageGB: 10,
     avgStorageGB: 50,
     isAiEnabled: false,
-    isCellularBackupEnabled: false,
+    isCellularEnabled: false,
     isLiveMonitoringEnabled: false,
     laborMode: 'standard',
 };
@@ -134,14 +134,24 @@ export const useStore = create<StoreState>()(
                     }, 0);
                     const nextCode = (currentMax + 1).toString().padStart(9, '0');
 
-                    const newProduct = { ...product, materialCode: nextCode };
+                    const newProduct: Product = {
+                        ...product,
+                        materialCode: nextCode,
+                        externalMaterialCode: product.externalMaterialCode || '',
+                        createdAt: new Date().toISOString(),
+                        updatedAt: new Date().toISOString()
+                    };
 
                     return { products: [...state.products, newProduct] };
                 }),
 
             updateProduct: (id: string, updates: Partial<Product>) =>
                 set((state) => ({
-                    products: state.products.map(p => p.id === id ? { ...p, ...updates } : p)
+                    products: state.products.map(p =>
+                        p.id === id
+                            ? { ...p, ...updates, updatedAt: new Date().toISOString() }
+                            : p
+                    )
                 })),
 
             deleteProduct: (id: string) =>

@@ -19,7 +19,8 @@ export interface CostDrivers {
     dunningCost: number;
 
     // Labor
-    agentHourlyRate: number; // Added to standard labor logic if needed, primarily for 'Advanced Service Mode' calculation context
+    // Labor
+    agentMonthlyRate: number; // Monthly cost per user for Advanced Service Mode
 }
 
 export type Currency = 'USD' | 'EUR' | 'GBP' | 'AUD' | 'CNY' | 'NZD';
@@ -35,7 +36,7 @@ export interface GlobalSettings {
 
     // Toggles
     isAiEnabled: boolean;
-    isCellularBackupEnabled: boolean;
+    isCellularEnabled: boolean;
     isLiveMonitoringEnabled: boolean;
 
     // Labor Mode
@@ -114,6 +115,10 @@ export interface Product {
     id: string;
     materialCode: string;
     description: string;
+    externalMaterialCode?: string; // Optional manual entry
+    analysisPrompt?: string; // Persisted AI Analysis Prompt
+    createdAt?: string; // ISO String (System Audit)
+    updatedAt?: string; // ISO String (System Audit)
 }
 
 export interface CalculatorData {
