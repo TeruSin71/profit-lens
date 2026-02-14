@@ -16,7 +16,7 @@ export default async function handler(
         }
 
         const result = await generateText({
-            model: 'google:gemini-pro',
+            model: 'google:gemini-1.5-flash',
             prompt: prompt,
         });
 
