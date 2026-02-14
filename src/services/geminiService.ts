@@ -31,7 +31,6 @@ export async function fetchCompetitorAnalysis(
 
         const genAI = new GoogleGenerativeAI(apiKey);
         const model = genAI.getGenerativeModel({ model: "gemini-pro" });
-        const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
         const prompt = analysisPrompt || productDescription;
         const result = await model.generateContent(prompt);
