@@ -1,12 +1,14 @@
 import { Input } from '../../ui/input';
 import { Label } from '../../ui/label';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '../../ui/card';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../../ui/select';
 
 
 interface Step1Props {
     data: {
         internalMaterialCode: string;
         externalMaterialCode: string;
+        cogsType?: string;
         description: string;
         createdAt?: string;
         updatedAt?: string;
@@ -65,6 +67,25 @@ export function Step1ProductData({ data, onChange, mode }: Step1Props) {
                             Optional. Max 9 characters.
                         </p>
                     )}
+                </div>
+
+                {/* COGS Type Dropdown */}
+                <div className="grid gap-2">
+                    <Label>COGS Type</Label>
+                    <Select
+                        value={data.cogsType}
+                        onValueChange={(val) => onChange('cogsType', val)}
+                        disabled={isReadOnly}
+                    >
+                        <SelectTrigger className={isReadOnly ? "border-transparent px-0 shadow-none font-medium text-slate-900 dark:text-slate-100" : ""}>
+                            <SelectValue placeholder="Select COGS Type" />
+                        </SelectTrigger>
+                        <SelectContent>
+                            <SelectItem value="Subscription">Subscription</SelectItem>
+                            <SelectItem value="License">License</SelectItem>
+                            <SelectItem value="Subscription & License">Subscription & License</SelectItem>
+                        </SelectContent>
+                    </Select>
                 </div>
 
                 {/* Description */}

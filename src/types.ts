@@ -115,6 +115,7 @@ export interface Product {
     id: string;
     materialCode: string;
     description: string;
+    cogsType?: 'Subscription' | 'License' | 'Subscription & License'; // New COGS Type
     externalMaterialCode?: string; // Optional manual entry
     analysisPrompt?: string; // Persisted AI Analysis Prompt
     createdAt?: string; // ISO String (System Audit)

@@ -49,6 +49,7 @@ export function ProductWizard() {
     const [productData, setProductData] = useState<{
         internalMaterialCode: string;
         externalMaterialCode: string;
+        cogsType?: 'Subscription' | 'License' | 'Subscription & License';
         description: string;
         analysisPrompt?: string; // Track prompt in wizard state
         createdAt?: string;
@@ -56,6 +57,7 @@ export function ProductWizard() {
     }>({
         internalMaterialCode: '',
         externalMaterialCode: '',
+        cogsType: undefined,
         description: '',
         analysisPrompt: '' // Init default
     });
@@ -73,6 +75,30 @@ export function ProductWizard() {
         return () => window.removeEventListener('beforeunload', handleBeforeUnload);
     }, [isDirty]);
 
+    // Keyboard Navigation Shortcuts
+    useEffect(() => {
+        const handleKeyDown = (e: KeyboardEvent) => {
+            if (e.key === 'Enter') {
+                // Check if focused element is a textarea
+                const activeElement = document.activeElement;
+                const isTextarea = activeElement?.tagName === 'TEXTAREA';
+
+                // Skip if in textarea (allow new lines)
+                if (isTextarea) return;
+
+                // Check validation before proceeding
+                if (isStepValid() && currentStep < 6) {
+                    // Prevent default to avoid form submissions if strict
+                    e.preventDefault();
+                    setCurrentStep(prev => prev + 1);
+                }
+            }
+        };
+
+        window.addEventListener('keydown', handleKeyDown);
+        return () => window.removeEventListener('keydown', handleKeyDown);
+    }, [currentStep, productData, isDirty]); // Dependencies for validation check
+
     // --- ACTIONS ---
 
     const handleStartWizard = (newMode: 'view' | 'edit' | 'create', productId?: string) => {
@@ -86,6 +112,7 @@ export function ProductWizard() {
             setProductData({
                 internalMaterialCode: '', // Will be generated on save
                 externalMaterialCode: '',
+                cogsType: undefined,
                 description: ''
             });
             // Ideally we'd reset other store parts too, but for now we keep global settings
@@ -96,6 +123,7 @@ export function ProductWizard() {
                 setProductData({
                     internalMaterialCode: product.materialCode,
                     externalMaterialCode: product.externalMaterialCode || '',
+                    cogsType: product.cogsType,
                     description: product.description,
                     analysisPrompt: product.analysisPrompt,
                     createdAt: product.createdAt,
@@ -141,6 +169,7 @@ export function ProductWizard() {
                 id: uuidv4(),
                 materialCode: '', // Handled by store/backend
                 description: productData.description,
+                cogsType: productData.cogsType,
                 externalMaterialCode: productData.externalMaterialCode
             };
             addProduct(newProduct);
@@ -148,6 +177,7 @@ export function ProductWizard() {
             // Update existing product
             updateProduct(activeProductId, {
                 description: productData.description,
+                cogsType: productData.cogsType,
                 externalMaterialCode: productData.externalMaterialCode
             });
         }
