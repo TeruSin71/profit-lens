@@ -14,11 +14,7 @@ export interface AnalysisResult {
     error?: string;
 }
 
-const FALLBACK_DATA: Competitor[] = [
-    { name: "Global IoT Solutions", price: "$45.00/mo", features: "Basic Analytics, 4G LTE Connectivity", audience: "SMB" },
-    { name: "AgriTech Pro", price: "$65.00/mo", features: "AI Crop Monitoring, Satellite Backup", audience: "Enterprise" },
-    { name: "SensorNet", price: "$39.99/mo", features: "Raw Data Feed, API Access Only", audience: "Developers" }
-];
+
 
 async function fetchWithTimeout(url: string, options: RequestInit, timeout = 15000): Promise<Response> {
     const controller = new AbortController();
@@ -105,14 +101,9 @@ export async function fetchCompetitorAnalysis(productDescription: string, prompt
         }
     }
 
-    // Final Fallback: Return Mock Data with 'Cached' status
-    console.warn("All attempts failed. Returning cached/mock data.");
-    return {
-        competitors: FALLBACK_DATA,
-        source: 'cached',
-        cachedAt: new Date(Date.now() - 86400000 * 2).toISOString(), // Mock "2 days ago"
-        error: lastError?.message || "Service Unavailable"
-    };
+    // Final Fallback: Throw Error if all else fails
+    console.error("All attempts failed. Service unavailable.");
+    throw new Error(lastError?.message || "Service Unavailable. Please check your connection or API key.");
 }
 
 // --- Client-Side Fallback Implementation ---
