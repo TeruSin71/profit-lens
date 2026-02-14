@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Pencil, Check, X, Plus, Trash2 } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle, CardFooter } from './ui/card';
 import { Input } from './ui/input';
@@ -6,7 +6,6 @@ import { Label } from './ui/label';
 import { Button } from './ui/button';
 import { Product } from '../types';
 import { cn } from '../lib/utils';
-import { useStore } from '../store/useStore';
 
 interface ProductDetailProps {
     initialProduct?: Product;
