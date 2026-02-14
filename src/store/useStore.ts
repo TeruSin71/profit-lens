@@ -126,9 +126,18 @@ export const useStore = create<StoreState>()(
             activeProductId: null,
 
             addProduct: (product: Product) =>
-                set((state) => ({
-                    products: [...state.products, product]
-                })),
+                set((state) => {
+                    // Auto-increment logic for Material Code (Simulation of DB Sequence)
+                    const currentMax = state.products.reduce((max, p) => {
+                        const val = parseInt(p.materialCode, 10);
+                        return isNaN(val) ? max : Math.max(max, val);
+                    }, 0);
+                    const nextCode = (currentMax + 1).toString().padStart(9, '0');
+
+                    const newProduct = { ...product, materialCode: nextCode };
+
+                    return { products: [...state.products, newProduct] };
+                }),
 
             updateProduct: (id: string, updates: Partial<Product>) =>
                 set((state) => ({
