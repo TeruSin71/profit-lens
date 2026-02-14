@@ -1,5 +1,3 @@
-import { GoogleGenerativeAI } from "@google/generative-ai";
-
 export interface Competitor {
     name: string;
     price: string;
@@ -18,23 +16,39 @@ export async function fetchCompetitorAnalysis(
     productDescription: string,
     analysisPrompt?: string
 ): Promise<AnalysisResult> {
-    console.log("DEBUG: fetchCompetitorAnalysis called");
+    console.log("DEBUG: fetchCompetitorAnalysis called via AI Gateway");
 
     if (!productDescription) return { competitors: [], source: 'cached' };
 
     try {
-        const apiKey = import.meta.env.VITE_GOOGLE_API_KEY;
+        const apiKey = import.meta.env.VITE_AI_GATEWAY_API_KEY;
 
         if (!apiKey) {
-            throw new Error("Google API Key is not configured");
+            throw new Error("AI Gateway API Key is not configured");
         }
 
-        const genAI = new GoogleGenerativeAI(apiKey);
-        const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
-
         const prompt = analysisPrompt || productDescription;
-        const result = await model.generateContent(prompt);
-        const analysis = result.response.text();
+
+        const response = await fetch('https://ai-gateway.vercel.sh/v1/chat/completions', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${apiKey}`
+            },
+            body: JSON.stringify({
+                model: 'google/gemini-2.0-flash',
+                messages: [
+                    { role: 'user', content: prompt }
+                ]
+            })
+        });
+
+        if (!response.ok) {
+            throw new Error(`AI Gateway error: ${response.statusText}`);
+        }
+
+        const data = await response.json();
+        const analysis = data.choices[0].message.content;
 
         console.log("Gemini Analysis:", analysis);
 

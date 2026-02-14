@@ -94,6 +94,7 @@ export function Step6ExecutiveInsights({ mode = 'view', draftProduct, onPromptCh
             // This catch block might not be reached if service handles everything, 
             // but strictly for safety if service throws unexpected error:
             setAiError(e.message || "An unexpected error occurred.");
+            window.alert(`Analysis Error: ${e.message}\n\nSee console for step-by-step logs.`);
             setAnalysisRun(false);
         } finally {
             setLoadingAI(false);

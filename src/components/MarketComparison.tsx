@@ -61,7 +61,9 @@ export function MarketComparison() {
         } catch (err: any) {
             console.error("Market analysis failed:", err);
             // Display the specific error message thrown by the service
-            setError(err.message || "An unexpected error occurred. Please check console.");
+            const msg = err.message || "An unexpected error occurred. Please check console.";
+            setError(msg);
+            window.alert(`Analysis Error: ${msg}\n\nSee console for step-by-step logs.`);
             setCompetitors([]);
         } finally {
             setLoading(false);
