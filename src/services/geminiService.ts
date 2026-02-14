@@ -30,13 +30,7 @@ export async function fetchCompetitorAnalysis(
         }
 
         const genAI = new GoogleGenerativeAI(apiKey);
-
-        // List available models
-        const models = await genAI.listModels();
-        console.log("Available models:", models);
-
-        // Use the first available model
-        const model = genAI.getGenerativeModel({ model: "gemini-1.5-pro" });
+        const model = genAI.getGenerativeModel({ model: "gemini-1.5-pro-latest" });
 
         const prompt = analysisPrompt || productDescription;
         const result = await model.generateContent(prompt);
