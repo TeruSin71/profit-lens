@@ -73,7 +73,7 @@ export function Step1ProductData({ data, onChange, mode }: Step1Props) {
                 <div className="grid gap-2">
                     <Label>COGS Type</Label>
                     <Select
-                        value={data.cogsType}
+                        value={data.cogsType || ""}
                         onValueChange={(val) => onChange('cogsType', val)}
                         disabled={isReadOnly}
                     >
