@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { useStore } from '../../../store/useStore';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '../../ui/card';
 import { Button } from '../../ui/button';
@@ -55,6 +55,15 @@ export function Step6ExecutiveInsights({ mode = 'view', draftProduct, onPromptCh
     const [analysisRun, setAnalysisRun] = useState(false);
     const [resultSource, setResultSource] = useState<'live' | 'cached' | null>(null);
     const [resultDate, setResultDate] = useState<string | undefined>(undefined);
+    const [cooldown, setCooldown] = useState(0);
+
+    // Cooldown Timer
+    useEffect(() => {
+        if (cooldown > 0) {
+            const timer = setTimeout(() => setCooldown(c => c - 1), 1000);
+            return () => clearTimeout(timer);
+        }
+    }, [cooldown]);
 
     // ... (Charts calculation logic remains same)
 
@@ -81,7 +90,16 @@ export function Step6ExecutiveInsights({ mode = 'view', draftProduct, onPromptCh
 
             // If we got back a "cached" source, it implies live failed. Detailed error might be in result.error
             if (result.source === 'cached' && result.error) {
-                setAiError(result.error);
+                let msg = result.error;
+
+                // 1. Catch & Interpret 429/Quota Errors
+                if (msg.includes('429') || msg.toLowerCase().includes('quota') || msg.includes('Too Many Requests')) {
+                    msg = "AI Usage Limit Reached. Please wait a moment before trying again.";
+                    setCooldown(5); // 2. Trigger 5s Cooldown
+                    window.alert(`Analysis Error: ${msg}`); // Alert immediately
+                }
+
+                setAiError(msg);
             }
 
             // Audit Timestamp Update (Only for existing products, only if live success?)
@@ -90,11 +108,16 @@ export function Step6ExecutiveInsights({ mode = 'view', draftProduct, onPromptCh
                 const { updateProduct } = useStore.getState();
                 updateProduct(activeProductId, { updatedAt: new Date().toISOString() });
             }
+            setAnalysisRun(false);
         } catch (e: any) {
-            // This catch block might not be reached if service handles everything, 
-            // but strictly for safety if service throws unexpected error:
-            setAiError(e.message || "An unexpected error occurred.");
-            window.alert(`Analysis Error: ${e.message}\n\nSee console for step-by-step logs.`);
+            console.error("Analysis Error:", e);
+            let msg = e.message || "An unexpected error occurred.";
+
+
+
+            setAiError(msg);
+            // 3. UI Feedback (Friendly Alert)
+            window.alert(`Analysis Error: ${msg}`);
             setAnalysisRun(false);
         } finally {
             setLoadingAI(false);
@@ -393,11 +416,11 @@ export function Step6ExecutiveInsights({ mode = 'view', draftProduct, onPromptCh
                         <div className="flex justify-end">
                             <Button
                                 onClick={runAnalysis}
-                                disabled={loadingAI || !analysisPrompt}
+                                disabled={loadingAI || !analysisPrompt || cooldown > 0}
                                 className="bg-indigo-600 hover:bg-indigo-700 text-white min-w-[140px]"
                             >
                                 {loadingAI ? <Loader2 className="w-4 h-4 animate-spin mr-2" /> : <Sparkles className="w-4 h-4 mr-2" />}
-                                {loadingAI ? 'Analyzing...' : 'Run Analysis'}
+                                {cooldown > 0 ? `Cooling down... ${cooldown}s` : (loadingAI ? 'Analyzing...' : 'Run Analysis')}
                             </Button>
                         </div>
                     </CardHeader>

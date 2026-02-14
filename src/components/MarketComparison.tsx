@@ -20,6 +20,15 @@ export function MarketComparison() {
     const [hasSearched, setHasSearched] = useState(false);
 
     const [error, setError] = useState<string | null>(null);
+    const [cooldown, setCooldown] = useState(0);
+
+    // Cooldown Timer
+    useEffect(() => {
+        if (cooldown > 0) {
+            const timer = setTimeout(() => setCooldown(c => c - 1), 1000);
+            return () => clearTimeout(timer);
+        }
+    }, [cooldown]);
 
     const selectedScenario = savedScenarios.find(s => s.id === selectedScenarioId);
 
@@ -56,14 +65,24 @@ export function MarketComparison() {
 
             // Optional: Warn if using cached data
             if (results.source === 'cached') {
-                setError("Live analysis unavailable. Showing cached data.");
+                let msg = results.error || "Live analysis unavailable. Showing cached data.";
+
+                // 1. Catch & Interpret 429/Quota Errors
+                if (msg.includes('429') || msg.toLowerCase().includes('quota') || msg.includes('Too Many Requests')) {
+                    msg = "AI Usage Limit Reached. Please wait a moment before trying again.";
+                    setCooldown(5); // 2. Trigger 5s Cooldown
+                    window.alert(`Analysis Error: ${msg}`);
+                }
+
+                setError(msg);
             }
         } catch (err: any) {
             console.error("Market analysis failed:", err);
             // Display the specific error message thrown by the service
-            const msg = err.message || "An unexpected error occurred. Please check console.";
+            let msg = err.message || "An unexpected error occurred. Please check console.";
+
             setError(msg);
-            window.alert(`Analysis Error: ${msg}\n\nSee console for step-by-step logs.`);
+            window.alert(`Analysis Error: ${msg}`);
             setCompetitors([]);
         } finally {
             setLoading(false);
@@ -146,10 +165,15 @@ export function MarketComparison() {
                             />
                             <Button
                                 onClick={handleManualAnalyze}
-                                disabled={!productDescription.trim() || loading}
+                                disabled={!productDescription.trim() || loading || cooldown > 0}
                                 className="h-[80px] w-[160px] flex flex-col gap-1 bg-indigo-600 hover:bg-indigo-700"
                             >
-                                {loading ? (
+                                {cooldown > 0 ? (
+                                    <>
+                                        <Loader2 className="w-5 h-5 animate-spin" />
+                                        <span className="text-xs">Cooling down {cooldown}s...</span>
+                                    </>
+                                ) : loading ? (
                                     <>
                                         <Loader2 className="w-5 h-5 animate-spin" />
                                         <span className="text-xs">Searching...</span>

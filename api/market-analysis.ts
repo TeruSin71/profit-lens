@@ -1,4 +1,4 @@
-import { generateText } from 'ai';
+import { GoogleGenerativeAI } from "@google/generative-ai";
 
 export default async function handler(
     req: any,
@@ -15,31 +15,37 @@ export default async function handler(
             return res.status(400).json({ error: 'Prompt is required' });
         }
 
-        // Server-side Logic: Try Specific Flash 001, then generic Flash, then Pro
-        const models = ['google:gemini-1.5-flash-001', 'google:gemini-1.5-flash', 'google:gemini-pro'];
-        let lastError;
-
-        // Log API Key Prefix (Securely)
+        // 1. Authenticate with Google SDK (Installed: @google/generative-ai)
         const apiKey = process.env.GOOGLE_GENERATIVE_AI_API_KEY || process.env.VITE_GOOGLE_API_KEY;
         console.log(`API Key configured: ${apiKey ? (apiKey.substring(0, 4) + '...') : 'MISSING'}`);
 
-        for (const modelName of models) {
-            try {
-                console.log(`Server API attempting model: ${modelName}`);
-                const result = await generateText({
-                    model: modelName,
-                    prompt: prompt,
-                });
-                return res.status(200).json({ analysis: result.text });
-            } catch (e: any) {
-                console.warn(`Server API failed with ${modelName}:`, e.message);
-                lastError = e;
-            }
+        if (!apiKey) {
+            throw new Error("Server API Key missing. Set GOOGLE_GENERATIVE_AI_API_KEY or VITE_GOOGLE_API_KEY.");
         }
 
-        throw lastError;
-    } catch (error) {
+        const genAI = new GoogleGenerativeAI(apiKey);
+
+        // 2. Simplified Logic: Use 'gemini-2.0-flash' (Confirmed Available)
+        const modelName = "gemini-2.0-flash";
+
+        try {
+            console.log(`Server API attempting model: ${modelName}`);
+            const model = genAI.getGenerativeModel({ model: modelName });
+            const result = await model.generateContent(prompt);
+
+            const text = result.response.text();
+            if (text) {
+                return res.status(200).json({ analysis: text });
+            } else {
+                throw new Error("Empty response from AI");
+            }
+        } catch (e: any) {
+            console.warn(`Server API failed with ${modelName}:`, e.message);
+            throw e;
+        }
+
+    } catch (error: any) {
         console.error('Error calling Gemini (Server):', error);
-        return res.status(500).json({ error: 'Failed to analyze market. All models failed.' });
+        return res.status(500).json({ error: `Failed to analyze: ${error.message}` });
     }
 }

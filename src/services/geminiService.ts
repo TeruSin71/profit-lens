@@ -1,3 +1,5 @@
+import { GoogleGenerativeAI } from "@google/generative-ai";
+
 export interface Competitor {
     name: string;
     price: string;
@@ -16,44 +18,31 @@ export async function fetchCompetitorAnalysis(
     productDescription: string,
     analysisPrompt?: string
 ): Promise<AnalysisResult> {
-    console.log("DEBUG: fetchCompetitorAnalysis called via AI Gateway");
+    console.log("DEBUG: fetchCompetitorAnalysis called");
 
     if (!productDescription) return { competitors: [], source: 'cached' };
 
     try {
-        const apiKey = import.meta.env.VITE_AI_GATEWAY_API_KEY;
+        const apiKey = import.meta.env.VITE_GOOGLE_API_KEY;
 
         if (!apiKey) {
-            throw new Error("AI Gateway API Key is not configured");
+            throw new Error("Google API Key is not configured");
         }
 
-        const prompt = analysisPrompt || productDescription;
+        const genAI = new GoogleGenerativeAI(apiKey);
+        // Using "gemini-2.0-flash" as confirmed available by diagnostics (Step: 2120)
+        const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
 
-        const response = await fetch('https://ai-gateway.vercel.sh/v1/chat/completions', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${apiKey}`
-            },
-            body: JSON.stringify({
-                model: 'google/gemini-2.0-flash',
-                messages: [
-                    { role: 'user', content: prompt }
-                ]
-            })
-        });
+        const promptText = analysisPrompt || productDescription;
+        console.log("Using gemini-2.0-flash...");
 
-        if (!response.ok) {
-            throw new Error(`AI Gateway error: ${response.statusText}`);
-        }
+        const result = await model.generateContent(promptText);
+        const analysis = result.response.text();
 
-        const data = await response.json();
-        const analysis = data.choices[0].message.content;
-
-        console.log("Gemini Analysis:", analysis);
+        console.log("Gemini Analysis Result:", analysis.substring(0, 50) + "...");
 
         return {
-            competitors: [{ name: "Market Analysis", price: "", features: analysis, audience: "" }],
+            competitors: [{ name: "Market Analysis", price: "Live", features: analysis, audience: "General" }],
             source: 'live',
             cachedAt: new Date().toISOString()
         };
